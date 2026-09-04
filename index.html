@@ -1,0 +1,352 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nightfall — Lighting & atmosphere toolkit for game artists</title>
+<meta name="description" content="Nightfall gives artists and developers cinematic lighting, fog and atmosphere in a single drop-in package. Ships for Unity, Unreal and Godot.">
+
+<!-- Open Graph / share cards -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Nightfall — Lighting & atmosphere toolkit">
+<meta property="og:description" content="Cinematic lighting, fog and atmosphere in a single drop-in package.">
+<meta property="og:image" content="assets/og-image.png">
+<meta property="og:url" content="https://example.com">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://example.com">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+
+<!-- Structured data helps the product show up properly in search results -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Nightfall",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Windows, macOS, Linux",
+  "offers": { "@type": "Offer", "price": "39.00", "priceCurrency": "USD" }
+}
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" id="nav">
+  <div class="wrap nav__inner">
+    <a class="brand" href="#top">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">Nightfall</span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#features">Features</a>
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <div class="nav__actions">
+      <a class="btn btn--ghost nav__signin" href="#pricing">Sign in</a>
+      <a class="btn btn--primary" data-buy="indie">Get Nightfall</a>
+    </div>
+    <button class="nav__toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+  <div class="nav__mobile" id="nav-mobile" hidden>
+    <a href="#features">Features</a>
+    <a href="#how">How it works</a>
+    <a href="#pricing">Pricing</a>
+    <a href="#faq">FAQ</a>
+    <a class="btn btn--primary" data-buy="indie">Get Nightfall</a>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ───────────────────────────── HERO ───────────────────────────── -->
+<section class="hero" id="top">
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="wrap hero__inner">
+    <p class="eyebrow"><span class="dot"></span> v2.1 — now with volumetric fog</p>
+    <h1 class="hero__title">Cinematic lighting for people <br class="br-lg">who’d rather be making the game</h1>
+    <p class="hero__sub">
+      Nightfall is a drop-in atmosphere toolkit for Unity, Unreal and Godot. Real volumetrics,
+      time-of-day, and hand-tuned presets — no shader graph archaeology required.
+    </p>
+    <div class="hero__cta">
+      <a class="btn btn--primary btn--lg" data-buy="indie">Get Nightfall — $39</a>
+      <a class="btn btn--ghost btn--lg" href="#demo">Watch the 90s demo</a>
+    </div>
+    <p class="hero__note">One-time purchase · Lifetime updates for v2 · 30-day refund, no questions</p>
+
+    <figure class="shot" id="demo">
+      <div class="shot__chrome" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <div class="shot__url">nightfall — scene_forest.unity</div>
+      </div>
+      <div class="shot__body" data-demo-slot>
+        <!-- Replace with a real screenshot: <img src="assets/screenshot.png" alt="…"> -->
+        <div class="shot__placeholder">
+          <p>Drop your product screenshot or demo video here</p>
+          <code>assets/screenshot.png</code>
+        </div>
+      </div>
+      <figcaption class="shot__caption">The same scene, before and after — 4 minutes of setup.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ─────────────────────────── SOCIAL PROOF ─────────────────────── -->
+<section class="proof">
+  <div class="wrap">
+    <p class="proof__label">Used on shipped titles by teams at</p>
+    <ul class="proof__logos">
+      <li>STUDIO ONE</li><li>PIXELFORGE</li><li>NORTHWIND</li>
+      <li>HALFLIGHT</li><li>ATLAS GAMES</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ───────────────────────────── FEATURES ───────────────────────── -->
+<section class="section" id="features">
+  <div class="wrap">
+    <p class="kicker">What you get</p>
+    <h2 class="section__title">Everything that usually eats a week</h2>
+    <p class="section__sub">Six systems that ship together and are designed to be deleted from your project cleanly if you change your mind.</p>
+
+    <ul class="grid grid--3 features">
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">◐</div>
+        <h3>Time-of-day system</h3>
+        <p>A single curve drives sun angle, colour temperature, fog density and ambient response. Scrub it, keyframe it, or hand it to gameplay code.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">≈</div>
+        <h3>Volumetric fog</h3>
+        <p>Screen-space volumetrics with light shafts that hold up at 60fps on a Steam Deck. Quality tiers included for low-end targets.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">✧</div>
+        <h3>48 art-directed presets</h3>
+        <p>Dawn, overcast, neon-noir, underwater, dust storm. Each one is a starting point you can pull apart, not a locked black box.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⚙</div>
+        <h3>Engine-native</h3>
+        <p>Built separately for Unity URP/HDRP, Unreal 5.3+ and Godot 4. No wrapper layer, no bespoke render pipeline to adopt.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⤴</div>
+        <h3>Non-destructive</h3>
+        <p>Nightfall never rewrites your materials. Remove the package and your scene is exactly as you left it.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">▤</div>
+        <h3>Source included</h3>
+        <p>Full, readable shader and C# source with the Pro licence. Fork it, strip it, ship it inside your build.</p>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- ─────────────────────────── HOW IT WORKS ─────────────────────── -->
+<section class="section section--alt" id="how">
+  <div class="wrap">
+    <p class="kicker">How it works</p>
+    <h2 class="section__title">Three steps, then back to work</h2>
+    <ol class="grid grid--3 steps">
+      <li class="step">
+        <span class="step__n">01</span>
+        <h3>Import the package</h3>
+        <p>One file. Drag it into your project — Nightfall detects your render pipeline and configures itself.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">02</span>
+        <h3>Drop in the rig</h3>
+        <p>Add the <code>Nightfall Atmosphere</code> prefab to your scene. Your existing lights keep working.</p>
+      </li>
+      <li class="step">
+        <span class="step__n">03</span>
+        <h3>Pick a look</h3>
+        <p>Choose a preset, then push the sliders until it’s yours. Save it back out as your own preset file.</p>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<!-- ───────────────────────────── PRICING ────────────────────────── -->
+<section class="section" id="pricing">
+  <div class="wrap">
+    <p class="kicker">Pricing</p>
+    <h2 class="section__title">Buy it once. It’s yours.</h2>
+    <p class="section__sub">No subscription, no seat audit, no per-title royalty. Prices in USD, tax added at checkout where required.</p>
+
+    <div class="grid grid--3 tiers">
+      <div class="tier">
+        <h3 class="tier__name">Indie</h3>
+        <p class="tier__price"><span class="tier__cur">$</span>39</p>
+        <p class="tier__meta">One-time · single developer</p>
+        <ul class="tier__list">
+          <li>All engines &amp; presets</li>
+          <li>Commercial use, unlimited titles</li>
+          <li>Free updates through v2.x</li>
+          <li>Community Discord</li>
+        </ul>
+        <a class="btn btn--ghost btn--block" data-buy="indie">Get Indie</a>
+      </div>
+
+      <div class="tier tier--featured">
+        <p class="tier__badge">Most popular</p>
+        <h3 class="tier__name">Pro</h3>
+        <p class="tier__price"><span class="tier__cur">$</span>89</p>
+        <p class="tier__meta">One-time · single developer</p>
+        <ul class="tier__list">
+          <li>Everything in Indie</li>
+          <li>Full shader &amp; C# source</li>
+          <li>Console target support</li>
+          <li>Priority email support</li>
+        </ul>
+        <a class="btn btn--primary btn--block" data-buy="pro">Get Pro</a>
+      </div>
+
+      <div class="tier">
+        <h3 class="tier__name">Studio</h3>
+        <p class="tier__price">Custom</p>
+        <p class="tier__meta">Site licence · 5+ seats</p>
+        <ul class="tier__list">
+          <li>Everything in Pro</li>
+          <li>Unlimited seats, one invoice</li>
+          <li>Redistribution rights</li>
+          <li>Onboarding call</li>
+        </ul>
+        <a class="btn btn--ghost btn--block" data-buy="studio">Talk to us</a>
+      </div>
+    </div>
+
+    <p class="guarantee">
+      <strong>30-day refund.</strong> If it doesn’t fit your project, reply to your receipt and you get your money back — no form, no interrogation.
+    </p>
+  </div>
+</section>
+
+<!-- ─────────────────────────── TESTIMONIALS ─────────────────────── -->
+<section class="section section--alt">
+  <div class="wrap">
+    <p class="kicker">What people say</p>
+    <h2 class="section__title">Shipped with, not just downloaded</h2>
+    <div class="grid grid--3 quotes">
+      <blockquote class="quote">
+        <p>“Replaced about 600 lines of our own lighting glue. The fog alone was worth it.”</p>
+        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Technical Artist, Studio One</footer>
+      </blockquote>
+      <blockquote class="quote">
+        <p>“I’m an artist, not a shader person. This is the first toolkit that didn’t make me feel stupid.”</p>
+        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Environment Artist</footer>
+      </blockquote>
+      <blockquote class="quote">
+        <p>“Dropped it in on a Friday, had the whole game re-lit by Monday. Support answered in an hour.”</p>
+        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Solo dev, Halflight</footer>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────────── FAQ ────────────────────────────── -->
+<section class="section" id="faq">
+  <div class="wrap wrap--narrow">
+    <p class="kicker">FAQ</p>
+    <h2 class="section__title">Questions people actually ask</h2>
+
+    <div class="faq">
+      <details>
+        <summary>Which engine versions are supported?</summary>
+        <p>Unity 2022.3 LTS and newer (URP and HDRP), Unreal Engine 5.3+, and Godot 4.2+. Older versions are on the archive page and still work, but only the current majors get fixes.</p>
+      </details>
+      <details>
+        <summary>Can I use it in a commercial game?</summary>
+        <p>Yes, on every tier, with no revenue cap and no royalty. The only thing you can’t do is resell Nightfall itself as an asset.</p>
+      </details>
+      <details>
+        <summary>Is this a subscription?</summary>
+        <p>No. You pay once and keep the version you bought forever, plus every update in that major version.</p>
+      </details>
+      <details>
+        <summary>What happens when v3 comes out?</summary>
+        <p>Existing customers get an upgrade price, not full price. v2 keeps working and keeps getting security and compatibility fixes for a year after v3 ships.</p>
+      </details>
+      <details>
+        <summary>Do you offer student or hobbyist pricing?</summary>
+        <p>Email us from your school address and we’ll sort you out. If money is genuinely the blocker, say so — we’d rather you had it.</p>
+      </details>
+      <details>
+        <summary>How do refunds work?</summary>
+        <p>Reply to your receipt within 30 days. We refund the full amount, usually same day. You don’t need to justify it.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────── FINAL CTA ────────────────────────── -->
+<section class="cta">
+  <div class="wrap wrap--narrow cta__inner">
+    <h2>Make the next scene the good-looking one</h2>
+    <p>Buy once, install in four minutes, refund in one email if it isn’t for you.</p>
+    <a class="btn btn--primary btn--lg" data-buy="indie">Get Nightfall — $39</a>
+
+    <form class="signup" data-signup hidden>
+      <label class="sr-only" for="email">Email address</label>
+      <input id="email" type="email" name="email" placeholder="you@studio.com" required autocomplete="email">
+      <button class="btn btn--ghost" type="submit">Email me updates</button>
+      <p class="signup__note">Occasional release notes. No drip sequence, unsubscribe in one click.</p>
+    </form>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div class="footer__brand">
+      <a class="brand" href="#top">
+        <span class="brand__mark" aria-hidden="true"></span>
+        <span class="brand__name">Nightfall</span>
+      </a>
+      <p class="footer__tag">Made by two people who got tired of re-lighting things.</p>
+    </div>
+    <nav class="footer__cols" aria-label="Footer">
+      <div>
+        <h4>Product</h4>
+        <a href="#features">Features</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#">Changelog</a>
+      </div>
+      <div>
+        <h4>Support</h4>
+        <a href="#">Documentation</a>
+        <a href="#">Contact</a>
+        <a href="#">Refunds</a>
+      </div>
+      <div>
+        <h4>Elsewhere</h4>
+        <a data-social="x" href="#">X / Twitter</a>
+        <a data-social="discord" href="#">Discord</a>
+        <a data-social="itch" href="#">itch.io</a>
+        <a data-social="github" href="#">GitHub</a>
+      </div>
+    </nav>
+  </div>
+  <div class="wrap footer__legal">
+    <p>© <span data-year></span> Your Company Ltd. All rights reserved.</p>
+    <p><a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Licence</a></p>
+  </div>
+</footer>
+
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
