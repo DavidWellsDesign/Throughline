@@ -26,6 +26,11 @@ window.SITE_CONFIG = {
   // Used when a checkout link is null (e.g. "Contact sales" / custom license).
   contactUrl: "mailto:hello@example.com?subject=Studio%20license",
 
+  // Where your provider sends buyers after payment. Set this as the redirect
+  // in the Stripe Payment Link (or your provider's equivalent), not here —
+  // it's listed for reference. See STRIPE.md.
+  successUrl: "/success.html",
+
   /* -------------------------------------------------------------------------
      EMAIL CAPTURE
      Any provider that accepts a plain POST form works. Paste the form action:

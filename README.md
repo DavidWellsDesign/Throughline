@@ -5,10 +5,12 @@ no framework — three files you can host anywhere static.
 
 ```
 index.html    all copy and structure
+success.html  post-purchase page your provider redirects to
 styles.css    design tokens at the top of :root — change those to rebrand
 config.js     checkout URLs, email endpoint, social links   ← the only file you MUST edit
 main.js       wires config.js into the page
 assets/       favicon, screenshots, og-image
+functions/    optional serverless fulfilment (Stripe webhook -> licence email)
 ```
 
 ## Run it locally
@@ -21,7 +23,8 @@ Then open http://localhost:8000
 
 ## Going live: the checklist
 
-1. **`config.js`** — paste your checkout URL(s) from your payment provider (see [PAYMENTS.md](PAYMENTS.md)).
+1. **`config.js`** — paste your checkout URL(s) from your payment provider. See
+   [PAYMENTS.md](PAYMENTS.md) to choose one, or [STRIPE.md](STRIPE.md) for the full Stripe walkthrough.
    Set `emailFormAction` to your newsletter endpoint, or leave it `null` to hide the signup form.
 2. **`index.html`** — replace the copy. Also update the `<title>`, `<meta name="description">`,
    the Open Graph tags, `<link rel="canonical">`, and the JSON-LD price block.
@@ -29,7 +32,8 @@ Then open http://localhost:8000
 4. **`assets/`** — add `screenshot.png` (16:9) and `og-image.png` (1200×630). Replace the
    placeholder inside `<div class="shot__body" data-demo-slot>` with your `<img>`, or set
    `demoEmbedUrl` in config to embed a YouTube/Vimeo demo instead.
-5. **Legal pages** — the footer links to Terms / Privacy / Licence are `#` stubs. Fill them before
+5. **`success.html`** — update the copy, and set it as the post-payment redirect in your provider.
+6. **Legal pages** — the footer links to Terms / Privacy / Licence are `#` stubs. Fill them before
    you take money; most payment providers require them.
 
 ## Deploying

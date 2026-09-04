@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Thanks — Nightfall</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .thanks{ min-height:100vh; display:grid; place-items:center; text-align:center; padding:40px 0; }
+  .thanks__tick{
+    width:56px; height:56px; margin:0 auto 26px; border-radius:50%;
+    display:grid; place-items:center; font-size:1.5rem; color:#fff;
+    background:linear-gradient(140deg, var(--accent), var(--accent-2));
+    box-shadow:0 10px 40px -10px var(--accent-glow);
+  }
+  .thanks h1{ font-size:clamp(1.8rem,4vw,2.6rem); }
+  .thanks__lead{ margin:18px auto 0; color:var(--text-dim); max-width:46ch; font-size:1.05rem; }
+  .next{ margin:40px auto 0; text-align:left; max-width:520px; display:grid; gap:12px; }
+  .next li{
+    display:flex; gap:14px; align-items:flex-start;
+    background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:18px 20px;
+  }
+  .next b{ display:block; margin-bottom:4px; }
+  .next span{ color:var(--text-dim); font-size:.93rem; }
+  .next__n{ font-family:var(--mono); color:var(--accent-soft); font-size:.85rem; padding-top:2px; }
+  .thanks__help{ margin-top:34px; color:var(--text-faint); font-size:.9rem; }
+  .thanks__help a{ color:var(--accent-soft); }
+</style>
+</head>
+<body>
+<main class="thanks">
+  <div class="wrap wrap--narrow">
+    <div class="thanks__tick" aria-hidden="true">✓</div>
+    <h1>You’re in. Thanks for buying Nightfall.</h1>
+    <p class="thanks__lead">
+      Your receipt and licence key are on their way to the email address you used at checkout.
+      They usually land within a minute.
+    </p>
+
+    <ol class="next">
+      <li>
+        <span class="next__n">01</span>
+        <div><b>Check your inbox</b><span>The email contains your licence key and download link. Check spam if it hasn’t arrived in five minutes.</span></div>
+      </li>
+      <li>
+        <span class="next__n">02</span>
+        <div><b>Import the package</b><span>Drag the file into your project — it detects your render pipeline and configures itself.</span></div>
+      </li>
+      <li>
+        <span class="next__n">03</span>
+        <div><b>Say hello</b><span>The Discord is where releases get announced and where you’ll get the fastest answer to anything.</span></div>
+      </li>
+    </ol>
+
+    <p class="thanks__help">
+      Nothing arrived, or something looks wrong?
+      <a href="mailto:hello@example.com">Email us</a> and we’ll sort it out — refunds included, for 30 days, no questions.
+    </p>
+
+    <p style="margin-top:28px">
+      <a class="btn btn--ghost" href="/">Back to the site</a>
+    </p>
+  </div>
+</main>
+<script src="config.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
