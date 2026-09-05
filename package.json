@@ -5,7 +5,10 @@
   "description": "Landing page and Stripe fulfilment for Throughline Progression and Throughline Balance.",
   "type": "module",
   "scripts": {
-    "dev": "python3 -m http.server 8000",
+    "dev": "python3 -m http.server 8000 --directory public",
     "test": "node scripts/test-webhook.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^4.129.0"
   }
 }

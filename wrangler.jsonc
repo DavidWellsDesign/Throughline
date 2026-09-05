@@ -1,0 +1,26 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "throughline-site",
+  "compatibility_date": "2026-09-01",
+
+  // Only this directory is uploaded. Everything else in the repo — docs,
+  // package.json, scripts/, wrangler.jsonc itself — stays private.
+  //
+  // Note: `.assetsignore` does NOT work for `wrangler pages deploy`; it is a
+  // Workers Static Assets feature. Pages excludes node_modules and .git on its
+  // own and uploads the rest of the deploy directory verbatim, so the only
+  // reliable way to keep a file off the public site is to keep it out of here.
+  //
+  // `functions/` stays at the project root, not inside public/ — Pages picks it
+  // up from alongside this config and it is never served as static content.
+  "pages_build_output_dir": "public",
+
+  // Licence keys, the email -> keys index, and webhook idempotency markers.
+  "kv_namespaces": [
+    {
+      "binding": "LICENCES",
+      "id": "7e3241f188384d40aeb88778926f0a92",
+      "preview_id": "130dc3a324e348a1be3532cd982793fb"
+    }
+  ]
+}

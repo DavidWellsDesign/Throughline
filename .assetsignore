@@ -1,9 +1,0 @@
-# Files in the repo root that should NOT be served as part of the site.
-# Cloudflare Pages uploads everything else in the deploy directory verbatim.
-README.md
-STRIPE.md
-PAYMENTS.md
-package.json
-package-lock.json
-scripts
-.assetsignore

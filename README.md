@@ -5,15 +5,21 @@ and **Throughline Balance** (curve/economy tuner), plus a discounted bundle. Sta
 build step, no dependencies, no framework.
 
 ```
-index.html    all copy and structure
-success.html  post-purchase page your provider redirects to
-styles.css    design tokens at the top of :root — change those to rebrand
-config.js     checkout URLs, prices, test-mode flag         ← the only file you MUST edit
-main.js       wires config.js into the page
-assets/       favicon, screenshots, og-image
-functions/    Stripe webhook -> licence keys -> email (one key per app)
-scripts/      `npm test` — 18 end-to-end fulfilment tests, no Stripe account needed
+public/           the deployed site — ONLY this directory is uploaded
+  index.html      all copy and structure
+  success.html    post-purchase page Stripe redirects to
+  styles.css      design tokens at the top of :root — change those to rebrand
+  config.js       checkout URLs, prices, test-mode flag   ← the only file you MUST edit
+  main.js         wires config.js into the page
+  assets/         favicon, screenshots, og-image
+functions/        Stripe webhook -> licence keys -> email (one key per app)
+scripts/          `npm test` — 22 fulfilment tests, no Stripe account needed
+wrangler.jsonc    Pages config: output dir + KV binding
 ```
+
+Everything outside `public/` stays private. That is deliberate and it is the *only* mechanism
+that works: `.assetsignore` is a Workers Static Assets feature and `wrangler pages deploy`
+ignores it, so a file's privacy depends entirely on it not being in the output directory.
 
 ## Run it locally
 
@@ -30,7 +36,8 @@ npm test
 ```
 
 Signs payloads exactly the way Stripe does and pushes them through the real webhook handler —
-covers both apps, the bundle, forged signatures, duplicate deliveries and provider outages.
+covers both apps, the bundle, forged signatures, test/live mix-ups, duplicate deliveries and
+provider outages.
 No Stripe account or network access required. See [STRIPE.md](STRIPE.md) for the live test-mode run.
 
 ## Going live: the checklist
@@ -55,15 +62,12 @@ No Stripe account or network access required. See [STRIPE.md](STRIPE.md) for the
 which is built in. No adapter, no second service, no code changes.
 
 ```bash
-npx wrangler kv namespace create LICENCES
-npx wrangler kv namespace create LICENCES --preview
+npx wrangler pages deploy --branch preview   # preview deployment
+npx wrangler pages deploy                    # production (branch: main)
 ```
 
-Paste the two returned ids into [`wrangler.toml`](wrangler.toml), then:
-
-```bash
-npx wrangler pages deploy .
-```
+The Pages project (`throughline-site`) and both KV namespaces already exist and their ids are in
+[`wrangler.jsonc`](wrangler.jsonc). Preview URL: <https://preview.throughline-site-ejs.pages.dev>
 
 Set the secrets in the Cloudflare dashboard (Pages → your project → Settings → Variables and
 Secrets), **encrypted**, never in this repo:
