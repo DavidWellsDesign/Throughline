@@ -50,8 +50,8 @@ It needs no Stripe account, no API key and no network. Run it after any change t
 
 Created in the **David Wells sandbox** account — nothing was touched in live mode.
 
-| SKU           | Product                       | Price | Product ID            | Price ID                          |
-| ------------- | ----------------------------- | ----- | --------------------- | --------------------------------- |
+| SKU           | Product                           | Price | Product ID            | Price ID                         |
+| ------------- | --------------------------------- | ----- | --------------------- | -------------------------------- |
 | `progression` | Throughline Progression           | $19   | `prod_VCaOzrtsb40e9x` | `price_1UCBDoQeBWmfPHBfNLrwdEIW`  |
 | `balance`     | Throughline Balance               | $19   | `prod_VCaOCtDarhoPmi` | `price_1UCBDxQeBWmfPHBfbY60aD1f`  |
 | `bundle`      | Throughline Progression + Balance | $29   | `prod_VCaOVXpLKMxHJi` | `price_1UCBE6QeBWmfPHBfLbsxnBSh`  |
