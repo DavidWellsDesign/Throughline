@@ -18,10 +18,11 @@ function sign(payload, secret = SECRET, t = Math.floor(Date.now() / 1000)) {
   return `t=${t},v1=${mac}`;
 }
 
-function sessionEvent({ id, product, email = "buyer@example.com", status = "paid", amount = 2900 }) {
+function sessionEvent({ id, product, email = "buyer@example.com", status = "paid", amount = 1900, livemode = false }) {
   return JSON.stringify({
     id,
     type: "checkout.session.completed",
+    livemode,
     data: {
       object: {
         id: `cs_test_${id}`,
@@ -168,6 +169,39 @@ await check("signing-secret rotation: either valid v1 is accepted", async () => 
   const newMac = crypto.createHmac("sha256", SECRET).update(`${t}.${body}`).digest("hex");
   const res = await handleStripeWebhook(post(body, `t=${t},v1=${oldMac},v1=${newMac}`), h.env);
   return res.status === 200;
+});
+
+console.log("\nTest/live separation");
+
+await check("test event is refused on a live-configured endpoint (400)", async () => {
+  const h = makeEnv(); h.install();
+  h.env.STRIPE_LIVEMODE = "true";
+  const body = sessionEvent({ id: "evt_testonlive", product: "bundle", livemode: false });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  return res.status === 400 && h.sent.length === 0;
+});
+
+await check("live event is refused on a test-configured endpoint (400)", async () => {
+  const h = makeEnv(); h.install();
+  h.env.STRIPE_LIVEMODE = "false";
+  const body = sessionEvent({ id: "evt_liveontest", product: "bundle", livemode: true });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  return res.status === 400 && h.sent.length === 0;
+});
+
+await check("matching livemode is fulfilled normally", async () => {
+  const h = makeEnv(); h.install();
+  h.env.STRIPE_LIVEMODE = "true";
+  const body = sessionEvent({ id: "evt_livematch", product: "progression", livemode: true });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  return res.status === 200 && h.sent.length === 1;
+});
+
+await check("guard is inert when STRIPE_LIVEMODE is unset", async () => {
+  const h = makeEnv(); h.install();               // no STRIPE_LIVEMODE
+  const body = sessionEvent({ id: "evt_noguard", product: "balance", livemode: true });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  return res.status === 200 && h.sent.length === 1;
 });
 
 console.log("\nDelivery guarantees — Stripe retries and edge cases");

@@ -12,6 +12,9 @@
    Required environment variables (set them as SECRETS, never in this repo):
      STRIPE_WEBHOOK_SECRET   whsec_...   Developers → Webhooks → your endpoint
      STRIPE_SECRET_KEY       sk_...      only used by the line-item fallback below
+     STRIPE_LIVEMODE         "true"/"false" — optional but recommended. Asserts
+                             the event's livemode matches this deployment, so a
+                             sandbox purchase can never issue a real licence.
      RESEND_API_KEY          re_...      or swap sendEmail() for your provider
      FROM_EMAIL              "Throughline <hello@yourdomain.com>"
    Optional bindings:
@@ -48,6 +51,22 @@ export async function handleStripeWebhook(request, env) {
   let event;
   try { event = JSON.parse(rawBody); }
   catch { return new Response("Malformed payload", { status: 400 }); }
+
+  // Test and live are separate worlds with separate signing secrets, so a
+  // mismatch here normally means a misconfigured deployment — most likely the
+  // test secret pasted into production. Without this, a sandbox purchase would
+  // mint a real licence in the production store. 400, not 500: retrying a test
+  // event against a live endpoint will never start working.
+  if (env.STRIPE_LIVEMODE !== undefined) {
+    const expectLive = String(env.STRIPE_LIVEMODE) === "true";
+    if (Boolean(event.livemode) !== expectLive) {
+      console.error(
+        `Rejected ${event.livemode ? "live" : "test"} event ${event.id} on an endpoint ` +
+        `configured for ${expectLive ? "live" : "test"}. Check STRIPE_WEBHOOK_SECRET.`
+      );
+      return new Response("Livemode mismatch", { status: 400 });
+    }
+  }
 
   // Stripe retries on any non-2xx, and may deliver the same event twice even on
   // success. Without this guard a network blip means the buyer gets two keys.

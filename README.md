@@ -50,14 +50,48 @@ No Stripe account or network access required. See [STRIPE.md](STRIPE.md) for the
 
 ## Deploying
 
-Any static host works. Zero-config options:
+**Cloudflare Pages** is the recommendation, and the repo is already set up for it: the webhook in
+`functions/` is written to the Pages Functions convention, and licence storage uses Workers KV,
+which is built in. No adapter, no second service, no code changes.
 
-- **Cloudflare Pages** — `npx wrangler pages deploy .`
-- **Netlify** — drag the folder onto app.netlify.com, or `npx netlify deploy --prod`
-- **Vercel** — `npx vercel --prod`
-- **GitHub Pages** — push to a repo, enable Pages on the branch root
+```bash
+npx wrangler kv namespace create LICENCES
+npx wrangler kv namespace create LICENCES --preview
+```
 
-All four are free at this scale and give you HTTPS and a custom domain.
+Paste the two returned ids into [`wrangler.toml`](wrangler.toml), then:
+
+```bash
+npx wrangler pages deploy .
+```
+
+Set the secrets in the Cloudflare dashboard (Pages → your project → Settings → Variables and
+Secrets), **encrypted**, never in this repo:
+
+| Variable | Value |
+| --- | --- |
+| `STRIPE_WEBHOOK_SECRET` | `whsec_…` from Developers → Webhooks → your endpoint |
+| `STRIPE_LIVEMODE` | `true` on production, `false` on any test deployment |
+| `RESEND_API_KEY` | `re_…`, or swap `sendEmail()` for your provider |
+| `FROM_EMAIL` | `Throughline <hello@yourdomain.com>` |
+
+Set these separately for Production and Preview — that is the point of `STRIPE_LIVEMODE`, and the
+webhook refuses events whose mode doesn't match.
+
+There is no build command. If the dashboard asks, leave it empty and set the output directory to
+`/`. [`.assetsignore`](.assetsignore) keeps the docs, `package.json` and `scripts/` out of the
+deployed site.
+
+### Other hosts
+
+The site is plain static files, so anything serves it. What differs is the webhook and its storage:
+
+| Host | Webhook | Licence storage |
+| --- | --- | --- |
+| **Cloudflare Pages** | Works as-is | Workers KV, built in |
+| Netlify | One-line adapter (bottom of the webhook file) | Netlify Blobs |
+| Vercel | One-line adapter | Vercel KV / Upstash, separate signup |
+| GitHub Pages | ❌ static only | — host the webhook elsewhere |
 
 ## What's already handled
 

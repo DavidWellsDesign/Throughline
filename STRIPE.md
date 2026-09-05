@@ -160,6 +160,10 @@ RESEND_API_KEY=re_...
 FROM_EMAIL=Throughline <hello@yourdomain.com>
 ```
 
+Also set **`STRIPE_LIVEMODE`** — `true` on production, `false` on any test deployment. The webhook
+asserts each event's mode matches, so a sandbox purchase can never mint a real licence if you ever
+paste the wrong signing secret into the wrong environment.
+
 `STRIPE_SECRET_KEY` is optional. It's only used by a fallback that looks up line items when a
 session arrives with no `metadata.product` — useful if you ever create a link and forget.
 
@@ -227,6 +231,20 @@ exercise fulfilment end to end.
 
 ---
 
+## Going live: test and live are separate accounts
+
+Nothing carries over. Your sandbox (`acct_1UC9EAQeBWmfPHBf`) and live account
+(`acct_1UC9DuHUl30CqJha`) have independent product catalogues, Payment Links, webhook endpoints and
+signing secrets. Going live means creating all of it a second time:
+
+1. Three products with the same `metadata.product` values (`progression`, `balance`, `bundle`)
+2. Three Payment Links, redirecting to your **real domain**, not `localhost:8000`
+3. A live webhook endpoint, whose signing secret is different from the sandbox one
+4. `STRIPE_LIVEMODE=true` on the production deployment
+
+Test-mode data is also disposable — sandboxes can be reset or deleted, so don't keep anything you
+care about there.
+
 ## Go-live checklist
 
 - [ ] `testMode: false` in `config.js`
@@ -242,6 +260,7 @@ exercise fulfilment end to end.
 - [ ] Statement descriptor set to something buyers will recognise — a mystery line on a card
       statement is a chargeback waiting to happen
 - [ ] `npm test` passing against the final webhook
+- [ ] `STRIPE_LIVEMODE=true` set on production, `false` on any preview deployment
 
 ## When to graduate from Payment Links
 
