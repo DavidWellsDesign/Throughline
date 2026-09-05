@@ -3,7 +3,7 @@
    Read at runtime by main.js.
 --------------------------------------------------------------------------- */
 window.SITE_CONFIG = {
-  siteName: "Greybox",
+  siteName: "Throughline",
 
   /* -------------------------------------------------------------------------
      TEST MODE
@@ -46,7 +46,7 @@ window.SITE_CONFIG = {
   },
 
   // Used when a checkout link is empty.
-  contactUrl: "mailto:hello@example.com?subject=Greybox",
+  contactUrl: "mailto:hello@example.com?subject=Throughline",
 
   // Where Stripe sends buyers after payment. Set this as the redirect in the
   // Payment Link itself; it's listed here for reference. See STRIPE.md.

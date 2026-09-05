@@ -1,7 +1,7 @@
-# Greybox — landing page
+# Throughline — landing page
 
-One page selling two desktop apps separately: **Greybox Progression** (node-graph campaign planner)
-and **Greybox Balance** (curve/economy tuner), plus a discounted bundle. Static HTML/CSS/JS, no
+One page selling two desktop apps separately: **Throughline Progression** (node-graph campaign planner)
+and **Throughline Balance** (curve/economy tuner), plus a discounted bundle. Static HTML/CSS/JS, no
 build step, no dependencies, no framework.
 
 ```

@@ -52,11 +52,11 @@ Created in the **David Wells sandbox** account — nothing was touched in live m
 
 | SKU           | Product                       | Price | Product ID            | Price ID                          |
 | ------------- | ----------------------------- | ----- | --------------------- | --------------------------------- |
-| `progression` | Greybox Progression           | $19   | `prod_VCaOzrtsb40e9x` | `price_1UCBDoQeBWmfPHBfNLrwdEIW`  |
-| `balance`     | Greybox Balance               | $19   | `prod_VCaOCtDarhoPmi` | `price_1UCBDxQeBWmfPHBfbY60aD1f`  |
-| `bundle`      | Greybox Progression + Balance | $29   | `prod_VCaOVXpLKMxHJi` | `price_1UCBE6QeBWmfPHBfLbsxnBSh`  |
+| `progression` | Throughline Progression           | $19   | `prod_VCaOzrtsb40e9x` | `price_1UCBDoQeBWmfPHBfNLrwdEIW`  |
+| `balance`     | Throughline Balance               | $19   | `prod_VCaOCtDarhoPmi` | `price_1UCBDxQeBWmfPHBfbY60aD1f`  |
+| `bundle`      | Throughline Progression + Balance | $29   | `prod_VCaOVXpLKMxHJi` | `price_1UCBE6QeBWmfPHBfLbsxnBSh`  |
 
-All three have `metadata.product` set, promotion codes enabled, statement descriptor `GREYBOX`,
+All three have `metadata.product` set, promotion codes enabled, statement descriptor `THROUGHLINE`,
 and redirect to `http://localhost:8000/success.html?session_id={CHECKOUT_SESSION_ID}` after
 payment — so a local test purchase lands on your own success page. **Change that redirect to your
 real domain before going live.**
@@ -105,9 +105,9 @@ Dashboard → **Product catalogue** → *Add product*, three times:
 
 | Product name                  | Price | `metadata.product` |
 | ----------------------------- | ----- | ------------------ |
-| Greybox Progression           | $19   | `progression`      |
-| Greybox Balance               | $19   | `balance`          |
-| Greybox Progression + Balance | $29   | `bundle`           |
+| Throughline Progression           | $19   | `progression`      |
+| Throughline Balance               | $19   | `balance`          |
+| Throughline Progression + Balance | $29   | `bundle`           |
 
 Then **Payment Links** → *Create* for each one, and set:
 
@@ -157,7 +157,7 @@ secret.
 ```
 STRIPE_WEBHOOK_SECRET=whsec_...
 RESEND_API_KEY=re_...
-FROM_EMAIL=Playfield <hello@yourdomain.com>
+FROM_EMAIL=Throughline <hello@yourdomain.com>
 ```
 
 `STRIPE_SECRET_KEY` is optional. It's only used by a fallback that looks up line items when a

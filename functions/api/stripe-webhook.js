@@ -13,7 +13,7 @@
      STRIPE_WEBHOOK_SECRET   whsec_...   Developers → Webhooks → your endpoint
      STRIPE_SECRET_KEY       sk_...      only used by the line-item fallback below
      RESEND_API_KEY          re_...      or swap sendEmail() for your provider
-     FROM_EMAIL              "Nightfall <hello@yourdomain.com>"
+     FROM_EMAIL              "Throughline <hello@yourdomain.com>"
    Optional bindings:
      LICENCES                Cloudflare KV namespace — stores keys + idempotency
 =========================================================================== */
@@ -23,9 +23,9 @@ const TOLERANCE_SECONDS = 300; // reject replayed events older than 5 minutes
 /* What we sell. `apps` is what a purchase of that SKU actually unlocks, so the
    bundle is one row here rather than a special case scattered through the code. */
 const CATALOGUE = {
-  progression: { label: "Game Progression", apps: ["progression"] },
-  balance:     { label: "Game Balance",     apps: ["balance"] },
-  bundle:      { label: "Progression + Balance bundle", apps: ["progression", "balance"] }
+  progression: { label: "Throughline Progression", apps: ["progression"] },
+  balance:     { label: "Throughline Balance",     apps: ["balance"] },
+  bundle:      { label: "Throughline Progression + Balance", apps: ["progression", "balance"] }
 };
 
 /* Licence key prefixes, so a key tells you what it opens at a glance. */

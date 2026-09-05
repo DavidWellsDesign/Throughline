@@ -43,7 +43,7 @@ function makeEnv() {
     env: {
       STRIPE_WEBHOOK_SECRET: SECRET,
       RESEND_API_KEY: "re_test",
-      FROM_EMAIL: "Playfield <hello@example.com>",
+      FROM_EMAIL: "Throughline <hello@example.com>",
       LICENCES: {
         get: async k => kv.get(k) ?? null,
         put: async (k, v) => void kv.set(k, v)

@@ -1,8 +1,8 @@
 {
-  "name": "greybox-site",
+  "name": "throughline-site",
   "private": true,
   "version": "0.1.0",
-  "description": "Landing page and Stripe fulfilment for Greybox Progression and Greybox Balance.",
+  "description": "Landing page and Stripe fulfilment for Throughline Progression and Throughline Balance.",
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",
