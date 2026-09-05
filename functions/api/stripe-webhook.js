@@ -1,8 +1,8 @@
 /* ===========================================================================
    Stripe webhook — fulfilment for a one-time digital purchase.
    ---------------------------------------------------------------------------
-   Listens for `checkout.session.completed`, mints a licence key, stores it,
-   and emails it to the buyer.
+   Listens for `checkout.session.completed`, works out which app(s) were bought,
+   mints a licence key for each, stores them, and emails them to the buyer.
 
    Zero dependencies: signature verification uses Web Crypto, Stripe and the
    email provider are called over plain `fetch`. That means this same file runs
@@ -11,7 +11,7 @@
 
    Required environment variables (set them as SECRETS, never in this repo):
      STRIPE_WEBHOOK_SECRET   whsec_...   Developers → Webhooks → your endpoint
-     STRIPE_SECRET_KEY       sk_live_... only needed if you call back to Stripe
+     STRIPE_SECRET_KEY       sk_...      only used by the line-item fallback below
      RESEND_API_KEY          re_...      or swap sendEmail() for your provider
      FROM_EMAIL              "Nightfall <hello@yourdomain.com>"
    Optional bindings:
@@ -19,6 +19,17 @@
 =========================================================================== */
 
 const TOLERANCE_SECONDS = 300; // reject replayed events older than 5 minutes
+
+/* What we sell. `apps` is what a purchase of that SKU actually unlocks, so the
+   bundle is one row here rather than a special case scattered through the code. */
+const CATALOGUE = {
+  progression: { label: "Game Progression", apps: ["progression"] },
+  balance:     { label: "Game Balance",     apps: ["balance"] },
+  bundle:      { label: "Progression + Balance bundle", apps: ["progression", "balance"] }
+};
+
+/* Licence key prefixes, so a key tells you what it opens at a glance. */
+const KEY_PREFIX = { progression: "GP", balance: "GB" };
 
 /* ---------------------------------------------------------------- handler */
 export async function handleStripeWebhook(request, env) {
@@ -72,25 +83,73 @@ async function fulfil(session, env) {
   const email = session.customer_details?.email || session.customer_email;
   if (!email) throw new Error(`No email on session ${session.id}`);
 
-  const key = makeLicenceKey();
+  const sku = await resolveSku(session, env);
+  const product = CATALOGUE[sku];
+  if (!product) throw new Error(`Unrecognised SKU "${sku}" on session ${session.id}`);
+
+  // One key per app, so a bundle buyer can be given Balance-only support later
+  // without reissuing the key that unlocks Progression.
+  const keys = product.apps.map(app => ({ app, key: makeLicenceKey(KEY_PREFIX[app]) }));
 
   if (env.LICENCES) {
-    await env.LICENCES.put(`licence:${key}`, JSON.stringify({
-      email,
-      sessionId: session.id,
-      amountTotal: session.amount_total,
-      currency: session.currency,
-      issuedAt: new Date().toISOString()
-    }));
-    // Reverse index so support can find a buyer's key from their email.
-    await env.LICENCES.put(`email:${email.toLowerCase()}`, key);
+    for (const { app, key } of keys) {
+      await env.LICENCES.put(`licence:${key}`, JSON.stringify({
+        app,
+        sku,
+        email,
+        sessionId: session.id,
+        amountTotal: session.amount_total,
+        currency: session.currency,
+        issuedAt: new Date().toISOString()
+      }));
+    }
+    // Reverse index so support can find a buyer's keys from their email alone.
+    await env.LICENCES.put(
+      `email:${email.toLowerCase()}`,
+      JSON.stringify(keys.map(k => ({ app: k.app, key: k.key })))
+    );
   }
 
-  await sendEmail(env, email, key);
+  await sendEmail(env, email, product, keys);
+}
+
+/* Which SKU was this?
+
+   Preferred: `metadata.product` on the Payment Link, which Stripe copies onto
+   the session. No API call, no secret key, works offline in tests.
+
+   Fallback: ask Stripe for the session's line items and match on the price ID.
+   Only runs when metadata is missing — e.g. a link created before you started
+   setting it — and needs STRIPE_SECRET_KEY plus a PRICE_<SKU> mapping. */
+async function resolveSku(session, env) {
+  const fromMetadata = session.metadata?.product;
+  if (fromMetadata) return fromMetadata;
+
+  if (!env.STRIPE_SECRET_KEY) {
+    throw new Error(
+      `Session ${session.id} has no metadata.product and no STRIPE_SECRET_KEY to look it up. ` +
+      `Set metadata.product on the Payment Link — see STRIPE.md.`
+    );
+  }
+
+  const res = await fetch(
+    `https://api.stripe.com/v1/checkout/sessions/${session.id}/line_items?limit=10`,
+    { headers: { Authorization: `Bearer ${env.STRIPE_SECRET_KEY}` } }
+  );
+  if (!res.ok) throw new Error(`Line-item lookup failed: ${res.status} ${await res.text()}`);
+
+  const { data = [] } = await res.json();
+  for (const item of data) {
+    const priceId = item.price?.id;
+    for (const sku of Object.keys(CATALOGUE)) {
+      if (priceId && env[`PRICE_${sku.toUpperCase()}`] === priceId) return sku;
+    }
+  }
+  throw new Error(`No SKU matched the line items on session ${session.id}`);
 }
 
 /* ----------------------------------------------------------- licence keys */
-function makeLicenceKey(prefix = "NGHT") {
+function makeLicenceKey(prefix = "PF") {
   // Crockford-ish alphabet: no I, L, O, 0 or 1, so keys survive being read
   // aloud on a support call or retyped from a screenshot.
   const alphabet = "ABCDEFGHJKMNPQRSTUVWXYZ23456789";
@@ -104,13 +163,19 @@ function makeLicenceKey(prefix = "NGHT") {
 }
 
 /* ----------------------------------------------------------------- email */
-async function sendEmail(env, to, key) {
-  const html = `
-    <p>Thanks for buying Nightfall.</p>
-    <p>Your licence key:</p>
+async function sendEmail(env, to, product, keys) {
+  const rows = keys.map(({ app, key }) => `
+    <p style="margin:18px 0 4px;color:#555">${CATALOGUE[app].label}</p>
     <p style="font:600 18px ui-monospace,Menlo,monospace;background:#f4f4f7;
-              padding:14px 18px;border-radius:8px;display:inline-block">${key}</p>
-    <p><a href="https://yourdomain.com/download">Download Nightfall</a></p>
+              padding:14px 18px;border-radius:8px;display:inline-block;margin:0">${key}</p>`).join("");
+
+  const html = `
+    <p>Thanks for buying ${product.label}.</p>
+    <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
+    ${rows}
+    <p style="margin-top:24px"><a href="https://yourdomain.com/download">Download your apps</a></p>
+    <p>These are early-access builds and aren't code-signed yet, so on macOS you'll need to
+       right-click the app and choose Open the first time.</p>
     <p>Any trouble at all, just reply to this email. 30-day refunds, no questions.</p>`;
 
   const res = await fetch("https://api.resend.com/emails", {
@@ -122,7 +187,7 @@ async function sendEmail(env, to, key) {
     body: JSON.stringify({
       from: env.FROM_EMAIL,
       to,
-      subject: "Your Nightfall licence key",
+      subject: `Your ${product.label} licence`,
       html
     })
   });
@@ -176,6 +241,8 @@ function json(body, status = 200) {
     status, headers: { "Content-Type": "application/json" }
   });
 }
+
+export { CATALOGUE }; // exported for the test harness
 
 /* ================================ adapters ================================
    Cloudflare Pages Functions (this file at functions/api/stripe-webhook.js

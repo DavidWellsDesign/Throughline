@@ -1,55 +1,66 @@
 /* ---------------------------------------------------------------------------
    SITE CONFIG — the only file you must edit to go live.
-   Everything here is read at runtime by main.js.
+   Read at runtime by main.js.
 --------------------------------------------------------------------------- */
 window.SITE_CONFIG = {
-  // Shown in the browser tab / share cards is set in index.html <head>.
-  productName: "Nightfall",
+  // TODO: placeholder studio name — find/replace "Playfield" across
+  // index.html + success.html when you pick the real one.
+  siteName: "Playfield",
 
   /* -------------------------------------------------------------------------
-     CHECKOUT LINKS
-     Paste the hosted checkout / buy URL from your payment provider.
-     Examples:
-       Stripe Payment Link : https://buy.stripe.com/abc123
-       Lemon Squeezy       : https://yourstore.lemonsqueezy.com/checkout/buy/UUID
-       Paddle             : https://pay.paddle.io/hsc_xxx
-       Gumroad            : https://yourname.gumroad.com/l/slug
-       itch.io            : https://yourname.itch.io/your-game
-     Leave a value as null to make that tier's button open the contact link.
+     TEST MODE
+     true  → shows a banner on the page and logs checkout clicks to the console,
+             so you can walk the whole flow without taking real money.
+     Set to false (and swap in live links below) when you're ready to sell.
+     A Stripe TEST payment link looks like  https://buy.stripe.com/test_xxxx
+     A LIVE one looks like                  https://buy.stripe.com/xxxx
+  ------------------------------------------------------------------------- */
+  testMode: true,
+
+  /* -------------------------------------------------------------------------
+     CHECKOUT LINKS — one per thing you sell.
+     Paste the Stripe Payment Link URL for each. Leave "" and the button falls
+     back to `contactUrl`, so an unconfigured button never silently 404s.
+     See STRIPE.md for how to create these.
   ------------------------------------------------------------------------- */
   checkout: {
-    indie:  "https://example.com/checkout/indie",
-    pro:    "https://example.com/checkout/pro",
-    studio: null // null => falls back to `contactUrl`
+    progression: "", // Game Progression, standalone
+    balance: "",     // Game Balance, standalone
+    bundle: ""       // both apps, discounted
   },
 
-  // Used when a checkout link is null (e.g. "Contact sales" / custom license).
-  contactUrl: "mailto:hello@example.com?subject=Studio%20license",
+  // Prices shown on the page. Keep these in step with the Stripe products —
+  // nothing verifies that they match, and a mismatch at checkout kills trust.
+  prices: {
+    progression: "$29",
+    balance: "$29",
+    bundle: "$49"
+  },
 
-  // Where your provider sends buyers after payment. Set this as the redirect
-  // in the Stripe Payment Link (or your provider's equivalent), not here —
-  // it's listed for reference. See STRIPE.md.
+  // Used when a checkout link is empty.
+  contactUrl: "mailto:hello@example.com?subject=Playfield",
+
+  // Where Stripe sends buyers after payment. Set this as the redirect in the
+  // Payment Link itself; it's listed here for reference. See STRIPE.md.
   successUrl: "/success.html",
 
   /* -------------------------------------------------------------------------
-     EMAIL CAPTURE
-     Any provider that accepts a plain POST form works. Paste the form action:
-       ConvertKit / Kit : https://app.kit.com/forms/XXXX/subscriptions
-       Buttondown       : https://buttondown.email/api/emails/embed-subscribe/USER
-       Mailchimp        : https://YOURLIST.us1.list-manage.com/subscribe/post?u=..&id=..
-       Formspree        : https://formspree.io/f/XXXX
-     Set to null to hide the signup form entirely.
+     EMAIL CAPTURE — any provider that accepts a plain POST form.
+       Kit/ConvertKit : https://app.kit.com/forms/XXXX/subscriptions
+       Buttondown     : https://buttondown.email/api/emails/embed-subscribe/USER
+       Formspree      : https://formspree.io/f/XXXX
+     Leave null to hide the signup form entirely.
   ------------------------------------------------------------------------- */
   emailFormAction: null,
-  emailFieldName: "email", // Mailchimp uses "EMAIL"
+  emailFieldName: "email",
 
-  // Optional: swap the demo video/embed in the hero. null => static preview.
+  // Optional: a demo video in the hero. null => the static preview slot.
   demoEmbedUrl: null,
 
   social: {
-    x:      "https://x.com/yourhandle",
-    discord:"https://discord.gg/yourinvite",
-    github: "https://github.com/yourhandle",
-    itch:   "https://yourname.itch.io"
+    x: "",
+    discord: "",
+    github: "",
+    itch: ""
   }
 };

@@ -3,13 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Nightfall — Lighting & atmosphere toolkit for game artists</title>
-<meta name="description" content="Nightfall gives artists and developers cinematic lighting, fog and atmosphere in a single drop-in package. Ships for Unity, Unreal and Godot.">
+<title>Playfield — Desktop tools for designing the shape of a game</title>
+<meta name="description" content="Two desktop tools for game designers: Game Progression maps your campaign as a node graph and flags where pacing sags. Game Balance turns XP, damage and drop-rate formulas into curves you can see. Local files, no account.">
 
-<!-- Open Graph / share cards -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Nightfall — Lighting & atmosphere toolkit">
-<meta property="og:description" content="Cinematic lighting, fog and atmosphere in a single drop-in package.">
+<meta property="og:title" content="Playfield — Desktop tools for designing the shape of a game">
+<meta property="og:description" content="Plan progression as a graph. Tune balance as curves. Two native desktop tools, plain-text project files, no account.">
 <meta property="og:image" content="assets/og-image.png">
 <meta property="og:url" content="https://example.com">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,48 +19,41 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
-
-<!-- Structured data helps the product show up properly in search results -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "Nightfall",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Windows, macOS, Linux",
-  "offers": { "@type": "Offer", "price": "39.00", "priceCurrency": "USD" }
-}
-</script>
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
+
+<div class="testbar" data-testbar hidden>
+  <strong>Test mode</strong> — checkout is running against Stripe test keys. No real charges.
+</div>
 
 <header class="nav" id="nav">
   <div class="wrap nav__inner">
     <a class="brand" href="#top">
       <span class="brand__mark" aria-hidden="true"></span>
-      <span class="brand__name">Nightfall</span>
+      <span class="brand__name">Playfield</span>
     </a>
     <nav class="nav__links" aria-label="Primary">
-      <a href="#features">Features</a>
-      <a href="#how">How it works</a>
+      <a href="#progression">Progression</a>
+      <a href="#balance">Balance</a>
+      <a href="#files">Your files</a>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav__actions">
-      <a class="btn btn--ghost nav__signin" href="#pricing">Sign in</a>
-      <a class="btn btn--primary" data-buy="indie">Get Nightfall</a>
+      <a class="btn btn--primary" href="#pricing">Get early access</a>
     </div>
     <button class="nav__toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Menu">
       <span></span><span></span><span></span>
     </button>
   </div>
   <div class="nav__mobile" id="nav-mobile" hidden>
-    <a href="#features">Features</a>
-    <a href="#how">How it works</a>
+    <a href="#progression">Progression</a>
+    <a href="#balance">Balance</a>
+    <a href="#files">Your files</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a class="btn btn--primary" data-buy="indie">Get Nightfall</a>
+    <a class="btn btn--primary" href="#pricing">Get early access</a>
   </div>
 </header>
 
@@ -71,110 +63,258 @@
 <section class="hero" id="top">
   <div class="hero__glow" aria-hidden="true"></div>
   <div class="wrap hero__inner">
-    <p class="eyebrow"><span class="dot"></span> v2.1 — now with volumetric fog</p>
-    <h1 class="hero__title">Cinematic lighting for people <br class="br-lg">who’d rather be making the game</h1>
+    <p class="eyebrow"><span class="dot"></span> Early access · v0.1 · macOS &amp; Windows</p>
+    <h1 class="hero__title">Design the shape of your game <br class="br-lg">before you build it</h1>
     <p class="hero__sub">
-      Nightfall is a drop-in atmosphere toolkit for Unity, Unreal and Godot. Real volumetrics,
-      time-of-day, and hand-tuned presets — no shader graph archaeology required.
+      Two desktop tools for the parts of design that live in a spreadsheet until they break.
+      Map your campaign as a graph and see where the pacing sags. Turn your XP and damage
+      formulas into curves you can actually look at.
     </p>
     <div class="hero__cta">
-      <a class="btn btn--primary btn--lg" data-buy="indie">Get Nightfall — $39</a>
-      <a class="btn btn--ghost btn--lg" href="#demo">Watch the 90s demo</a>
+      <a class="btn btn--primary btn--lg" href="#pricing">See pricing</a>
+      <a class="btn btn--ghost btn--lg" href="#progression">What they do</a>
     </div>
-    <p class="hero__note">One-time purchase · Lifetime updates for v2 · 30-day refund, no questions</p>
+    <p class="hero__note">Native desktop apps · Plain-text project files · No account, no cloud, no telemetry</p>
 
-    <figure class="shot" id="demo">
-      <div class="shot__chrome" aria-hidden="true">
-        <span></span><span></span><span></span>
-        <div class="shot__url">nightfall — scene_forest.unity</div>
-      </div>
-      <div class="shot__body" data-demo-slot>
-        <!-- Replace with a real screenshot: <img src="assets/screenshot.png" alt="…"> -->
-        <div class="shot__placeholder">
-          <p>Drop your product screenshot or demo video here</p>
-          <code>assets/screenshot.png</code>
-        </div>
-      </div>
-      <figcaption class="shot__caption">The same scene, before and after — 4 minutes of setup.</figcaption>
-    </figure>
-  </div>
-</section>
-
-<!-- ─────────────────────────── SOCIAL PROOF ─────────────────────── -->
-<section class="proof">
-  <div class="wrap">
-    <p class="proof__label">Used on shipped titles by teams at</p>
-    <ul class="proof__logos">
-      <li>STUDIO ONE</li><li>PIXELFORGE</li><li>NORTHWIND</li>
-      <li>HALFLIGHT</li><li>ATLAS GAMES</li>
+    <ul class="duo">
+      <li class="duo__item">
+        <span class="duo__tag">01</span>
+        <h2>Game Progression</h2>
+        <p>A node graph of every chapter, area and beat — and a timeline that reads one path
+           through it and tells you where players will get bored.</p>
+        <a class="duo__link" href="#progression">How it works →</a>
+      </li>
+      <li class="duo__item">
+        <span class="duo__tag">02</span>
+        <h2>Game Balance</h2>
+        <p>Define stats as formulas or hand-placed points, tune the parameters on sliders,
+           and watch the curves redraw while you drag.</p>
+        <a class="duo__link" href="#balance">How it works →</a>
+      </li>
     </ul>
   </div>
 </section>
 
-<!-- ───────────────────────────── FEATURES ───────────────────────── -->
-<section class="section" id="features">
+<!-- ─────────────────────── PRODUCT 1: PROGRESSION ─────────────────── -->
+<section class="section product" id="progression">
   <div class="wrap">
-    <p class="kicker">What you get</p>
-    <h2 class="section__title">Everything that usually eats a week</h2>
-    <p class="section__sub">Six systems that ship together and are designed to be deleted from your project cleanly if you change your mind.</p>
+    <div class="product__head">
+      <p class="kicker">01 — Game Progression</p>
+      <h2 class="section__title">Pacing problems are obvious on a timeline<br class="br-lg"> and invisible in a doc</h2>
+      <p class="section__sub">
+        Every stage of your game is a node: a chapter, an area, a story beat. Wire them into a
+        graph, tag what each one introduces and rewards, and the timeline reads a path through
+        it and marks the stretches that sag.
+      </p>
+    </div>
+
+    <figure class="shot">
+      <div class="shot__chrome" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <div class="shot__url">Game Progression — branching-adventure.gpproj</div>
+      </div>
+      <div class="shot__body">
+        <div class="shot__placeholder">
+          <p>Screenshot of the graph + pacing timeline</p>
+          <code>assets/progression.png</code>
+        </div>
+      </div>
+    </figure>
 
     <ul class="grid grid--3 features">
       <li class="card">
-        <div class="card__icon" aria-hidden="true">◐</div>
-        <h3>Time-of-day system</h3>
-        <p>A single curve drives sun angle, colour temperature, fog density and ambient response. Scrub it, keyframe it, or hand it to gameplay code.</p>
+        <div class="card__icon" aria-hidden="true">⑃</div>
+        <h3>A real branching graph</h3>
+        <p>Not a list pretending to be a tree. Stages can have several predecessors and
+           successors, and branches can re-converge — so a linear campaign, a visual novel and a
+           non-linear adventure all fit without switching modes.</p>
       </li>
       <li class="card">
-        <div class="card__icon" aria-hidden="true">≈</div>
-        <h3>Volumetric fog</h3>
-        <p>Screen-space volumetrics with light shafts that hold up at 60fps on a Steam Deck. Quality tiers included for low-end targets.</p>
+        <div class="card__icon" aria-hidden="true">◷</div>
+        <h3>Pacing rules that fire</h3>
+        <p>Five checks run over the path you pick: introduction gaps, reward gaps, difficulty
+           that flatlines, difficulty that spikes, and flags required by a stage that nothing
+           earlier ever sets.</p>
       </li>
       <li class="card">
-        <div class="card__icon" aria-hidden="true">✧</div>
-        <h3>48 art-directed presets</h3>
-        <p>Dawn, overcast, neon-noir, underwater, dust storm. Each one is a starting point you can pull apart, not a locked black box.</p>
+        <div class="card__icon" aria-hidden="true">⚑</div>
+        <h3>Flag-gated routes</h3>
+        <p>Mark which stages set a flag and which require one. The timeline traces whether a
+           route is actually reachable, so a gate you wired backwards shows up before a
+           playtester finds it.</p>
       </li>
       <li class="card">
-        <div class="card__icon" aria-hidden="true">⚙</div>
-        <h3>Engine-native</h3>
-        <p>Built separately for Unity URP/HDRP, Unreal 5.3+ and Godot 4. No wrapper layer, no bespoke render pipeline to adopt.</p>
+        <div class="card__icon" aria-hidden="true">◧</div>
+        <h3>Per-stage detail</h3>
+        <p>Tags, what it introduces, what it rewards, a difficulty band, flags and freeform
+           notes. Every field past the name is optional — most genres only use a slice of it.</p>
       </li>
       <li class="card">
-        <div class="card__icon" aria-hidden="true">⤴</div>
-        <h3>Non-destructive</h3>
-        <p>Nightfall never rewrites your materials. Remove the package and your scene is exactly as you left it.</p>
+        <div class="card__icon" aria-hidden="true">⌗</div>
+        <h3>Auto-layout, no cycles</h3>
+        <p>Dagre lays the graph out so you're not dragging boxes into rows. Connections that
+           would close a loop are refused as you drag them, because a cycle would quietly
+           break pathfinding and pacing both.</p>
       </li>
       <li class="card">
-        <div class="card__icon" aria-hidden="true">▤</div>
-        <h3>Source included</h3>
-        <p>Full, readable shader and C# source with the Pro licence. Fork it, strip it, ship it inside your build.</p>
+        <div class="card__icon" aria-hidden="true">⇄</div>
+        <h3>Tunable thresholds</h3>
+        <p>What counts as "too long without a reward" is one object at the top of one file.
+           A roguelite and a 40-hour RPG do not want the same numbers.</p>
+      </li>
+    </ul>
+
+    <p class="inline-cta">
+      <a class="btn btn--primary" data-buy="progression">Get Game Progression — <span data-price="progression">$29</span></a>
+      <span class="inline-cta__note">Ships with a twelve-stage example project that has two deliberate pacing problems in it.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ───────────────────────── PRODUCT 2: BALANCE ──────────────────── -->
+<section class="section section--alt product" id="balance">
+  <div class="wrap">
+    <div class="product__head">
+      <p class="kicker">02 — Game Balance</p>
+      <h2 class="section__title">Stop reading your XP table<br class="br-lg"> and start looking at it</h2>
+      <p class="section__sub">
+        Damage curves, XP tables, drop rates. Write the formula, and the parameters inside it
+        become sliders. Drag one and the curve redraws — including next to the other curves
+        it has to stay in proportion with.
+      </p>
+    </div>
+
+    <figure class="shot">
+      <div class="shot__chrome" aria-hidden="true">
+        <span></span><span></span><span></span>
+        <div class="shot__url">Game Balance — Untitled.gbproj</div>
+      </div>
+      <div class="shot__body">
+        <div class="shot__placeholder">
+          <p>Screenshot of the curve editor + comparison</p>
+          <code>assets/balance.png</code>
+        </div>
+      </div>
+    </figure>
+
+    <ul class="grid grid--3 features">
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">ƒ</div>
+        <h3>Formulas or points</h3>
+        <p>Define a stat as an expression like <code>base + (x * scaling)</code>, or place the
+           points by hand in a table. Switch between the two per stat, whichever way you
+           actually think about that number.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⇉</div>
+        <h3>Parameters become sliders</h3>
+        <p>Free variables in your expression are detected automatically and get a slider and a
+           number field. No declaring them twice, no config step between writing and tuning.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">◫</div>
+        <h3>Comparisons</h3>
+        <p>Name a set of stats and plot them together. Player damage against enemy HP, XP
+           required against XP granted — the relationships that matter are between curves,
+           not inside one.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⊞</div>
+        <h3>Explicit domains</h3>
+        <p>Every stat declares the range it's defined over — levels 1 to 100 in steps of 1.
+           Sampling is bounded, so a tiny step across a huge domain warns instead of hanging
+           the window.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⛨</div>
+        <h3>Expressions stay sandboxed</h3>
+        <p>Project files get shared between designers, so a formula is only ever evaluated
+           against <code>x</code> and its own declared parameters — never an open scope.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">◑</div>
+        <h3>Validation before it bites</h3>
+        <p>Bad expressions and impossible domains are caught and explained where you typed
+           them, rather than rendering an empty chart and leaving you to guess.</p>
+      </li>
+    </ul>
+
+    <p class="inline-cta">
+      <a class="btn btn--primary" data-buy="balance">Get Game Balance — <span data-price="balance">$29</span></a>
+      <span class="inline-cta__note">Uses the number-only math.js build — same expressions you'd write in a spreadsheet.</span>
+    </p>
+  </div>
+</section>
+
+<!-- ────────────────────────── SHARED: FILES ──────────────────────── -->
+<section class="section" id="files">
+  <div class="wrap">
+    <p class="kicker">Both apps</p>
+    <h2 class="section__title">Your design docs shouldn't need our servers</h2>
+    <p class="section__sub">
+      These are native desktop apps that open and save files on your disk. That's the whole
+      distribution model, and it's deliberate.
+    </p>
+
+    <ul class="grid grid--3 features">
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">{ }</div>
+        <h3>Plain, diffable JSON</h3>
+        <p><code>.gpproj</code> and <code>.gbproj</code> are pretty-printed JSON meant to be
+           read and hand-edited. Commit them next to your engine project and code review a
+           pacing change like any other diff.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⤓</div>
+        <h3>No account, no cloud</h3>
+        <p>Nothing to sign into, nothing phoning home, no seat that expires. The app runs
+           offline on a plane and your unannounced game stays on your machine.</p>
+      </li>
+      <li class="card">
+        <div class="card__icon" aria-hidden="true">⎙</div>
+        <h3>Saves that can't corrupt</h3>
+        <p>Writes go to a temp file and get renamed into place, so a crash or a pulled cable
+           mid-save can't leave you with half a project file.</p>
       </li>
     </ul>
   </div>
 </section>
 
-<!-- ─────────────────────────── HOW IT WORKS ─────────────────────── -->
-<section class="section section--alt" id="how">
-  <div class="wrap">
-    <p class="kicker">How it works</p>
-    <h2 class="section__title">Three steps, then back to work</h2>
-    <ol class="grid grid--3 steps">
-      <li class="step">
-        <span class="step__n">01</span>
-        <h3>Import the package</h3>
-        <p>One file. Drag it into your project — Nightfall detects your render pipeline and configures itself.</p>
-      </li>
-      <li class="step">
-        <span class="step__n">02</span>
-        <h3>Drop in the rig</h3>
-        <p>Add the <code>Nightfall Atmosphere</code> prefab to your scene. Your existing lights keep working.</p>
-      </li>
-      <li class="step">
-        <span class="step__n">03</span>
-        <h3>Pick a look</h3>
-        <p>Choose a preset, then push the sliders until it’s yours. Save it back out as your own preset file.</p>
-      </li>
-    </ol>
+<!-- ───────────────────────── EARLY ACCESS ────────────────────────── -->
+<section class="section section--alt" id="early">
+  <div class="wrap wrap--narrow">
+    <p class="kicker">Where these actually are</p>
+    <h2 class="section__title">Early access, honestly</h2>
+    <p class="section__sub">
+      Both apps are at v0.1 and in active development. Here's the real state of them, so you
+      can decide whether now is your moment.
+    </p>
+
+    <div class="status">
+      <div class="status__col">
+        <h3><span class="status__dot status__dot--on"></span> Working today</h3>
+        <ul>
+          <li>Progression: graph editing, per-stage detail, auto-layout, all five pacing rules, open/save</li>
+          <li>Balance: formula parsing and evaluation, points editing, parameter sliders, live curve preview, open/save</li>
+          <li>Native macOS and Windows builds</li>
+        </ul>
+      </div>
+      <div class="status__col">
+        <h3><span class="status__dot"></span> Not there yet</h3>
+        <ul>
+          <li>Undo/redo</li>
+          <li>Exporting curves and tables to CSV/JSON for your engine</li>
+          <li>Code signing — see the FAQ for what you'll see on first launch</li>
+          <li>Simulation in Balance, beyond static curves</li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="guarantee">
+      <strong>Early-access price, locked.</strong> You pay today's price once and keep every
+      update through 1.0 and the whole 1.x line. The price goes up at 1.0; yours doesn't.
+      If it isn't what you needed, the 30-day refund below is real.
+    </p>
   </div>
 </section>
 
@@ -182,109 +322,106 @@
 <section class="section" id="pricing">
   <div class="wrap">
     <p class="kicker">Pricing</p>
-    <h2 class="section__title">Buy it once. It’s yours.</h2>
-    <p class="section__sub">No subscription, no seat audit, no per-title royalty. Prices in USD, tax added at checkout where required.</p>
+    <h2 class="section__title">Buy either. Or both, for less.</h2>
+    <p class="section__sub">
+      One-time purchase, no subscription. Prices in USD, tax added at checkout where required.
+    </p>
 
     <div class="grid grid--3 tiers">
       <div class="tier">
-        <h3 class="tier__name">Indie</h3>
-        <p class="tier__price"><span class="tier__cur">$</span>39</p>
-        <p class="tier__meta">One-time · single developer</p>
+        <h3 class="tier__name">Game Progression</h3>
+        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="progression">29</span></p>
+        <p class="tier__meta">One-time · early access</p>
         <ul class="tier__list">
-          <li>All engines &amp; presets</li>
-          <li>Commercial use, unlimited titles</li>
-          <li>Free updates through v2.x</li>
-          <li>Community Discord</li>
+          <li>Branching stage graph</li>
+          <li>Pacing timeline &amp; five rules</li>
+          <li>Example project included</li>
+          <li>Updates through 1.x</li>
         </ul>
-        <a class="btn btn--ghost btn--block" data-buy="indie">Get Indie</a>
+        <a class="btn btn--ghost btn--block" data-buy="progression">Get Progression</a>
       </div>
 
       <div class="tier tier--featured">
-        <p class="tier__badge">Most popular</p>
-        <h3 class="tier__name">Pro</h3>
-        <p class="tier__price"><span class="tier__cur">$</span>89</p>
-        <p class="tier__meta">One-time · single developer</p>
+        <p class="tier__badge">Best value</p>
+        <h3 class="tier__name">Both apps</h3>
+        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="bundle">49</span></p>
+        <p class="tier__meta">One-time · early access</p>
         <ul class="tier__list">
-          <li>Everything in Indie</li>
-          <li>Full shader &amp; C# source</li>
-          <li>Console target support</li>
-          <li>Priority email support</li>
+          <li>Everything in both apps</li>
+          <li>Plan the flow, then tune the numbers</li>
+          <li>Updates through 1.x for both</li>
+          <li>A licence key for each app</li>
         </ul>
-        <a class="btn btn--primary btn--block" data-buy="pro">Get Pro</a>
+        <a class="btn btn--primary btn--block" data-buy="bundle">Get the bundle</a>
       </div>
 
       <div class="tier">
-        <h3 class="tier__name">Studio</h3>
-        <p class="tier__price">Custom</p>
-        <p class="tier__meta">Site licence · 5+ seats</p>
+        <h3 class="tier__name">Game Balance</h3>
+        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="balance">29</span></p>
+        <p class="tier__meta">One-time · early access</p>
         <ul class="tier__list">
-          <li>Everything in Pro</li>
-          <li>Unlimited seats, one invoice</li>
-          <li>Redistribution rights</li>
-          <li>Onboarding call</li>
+          <li>Formula &amp; points curves</li>
+          <li>Parameter sliders, live preview</li>
+          <li>Multi-stat comparisons</li>
+          <li>Updates through 1.x</li>
         </ul>
-        <a class="btn btn--ghost btn--block" data-buy="studio">Talk to us</a>
+        <a class="btn btn--ghost btn--block" data-buy="balance">Get Balance</a>
       </div>
     </div>
 
     <p class="guarantee">
-      <strong>30-day refund.</strong> If it doesn’t fit your project, reply to your receipt and you get your money back — no form, no interrogation.
+      <strong>30-day refund.</strong> Reply to your receipt and you get your money back — no
+      form, no interrogation. Buying unfinished software should not be a gamble.
     </p>
   </div>
 </section>
 
-<!-- ─────────────────────────── TESTIMONIALS ─────────────────────── -->
-<section class="section section--alt">
-  <div class="wrap">
-    <p class="kicker">What people say</p>
-    <h2 class="section__title">Shipped with, not just downloaded</h2>
-    <div class="grid grid--3 quotes">
-      <blockquote class="quote">
-        <p>“Replaced about 600 lines of our own lighting glue. The fog alone was worth it.”</p>
-        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Technical Artist, Studio One</footer>
-      </blockquote>
-      <blockquote class="quote">
-        <p>“I’m an artist, not a shader person. This is the first toolkit that didn’t make me feel stupid.”</p>
-        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Environment Artist</footer>
-      </blockquote>
-      <blockquote class="quote">
-        <p>“Dropped it in on a Friday, had the whole game re-lit by Monday. Support answered in an hour.”</p>
-        <footer><span class="avatar" aria-hidden="true"></span> Placeholder Name · Solo dev, Halflight</footer>
-      </blockquote>
-    </div>
-  </div>
-</section>
-
 <!-- ───────────────────────────── FAQ ────────────────────────────── -->
-<section class="section" id="faq">
+<section class="section section--alt" id="faq">
   <div class="wrap wrap--narrow">
     <p class="kicker">FAQ</p>
-    <h2 class="section__title">Questions people actually ask</h2>
+    <h2 class="section__title">Questions worth answering</h2>
 
     <div class="faq">
       <details>
-        <summary>Which engine versions are supported?</summary>
-        <p>Unity 2022.3 LTS and newer (URP and HDRP), Unreal Engine 5.3+, and Godot 4.2+. Older versions are on the archive page and still work, but only the current majors get fixes.</p>
+        <summary>Do I need both apps?</summary>
+        <p>No — they're separate tools and either stands alone. They're built to sit either side
+           of the same job: Progression is where you decide the shape of the game, Balance is
+           where you decide the numbers inside it. The bundle exists because most people
+           eventually want both, not because one needs the other.</p>
       </details>
       <details>
-        <summary>Can I use it in a commercial game?</summary>
-        <p>Yes, on every tier, with no revenue cap and no royalty. The only thing you can’t do is resell Nightfall itself as an asset.</p>
+        <summary>What platforms?</summary>
+        <p>macOS and Windows, as native desktop apps built on Tauri. There's no web version and
+           no Linux build yet — if you need Linux, say so and it moves up the list.</p>
       </details>
       <details>
-        <summary>Is this a subscription?</summary>
-        <p>No. You pay once and keep the version you bought forever, plus every update in that major version.</p>
+        <summary>What will I see on first launch?</summary>
+        <p>Right now the builds aren't code-signed, so macOS Gatekeeper will warn you and
+           Windows SmartScreen may too. You'll need to right-click → Open the first time on
+           macOS. Signing is on the list above and this answer will change; until it does, it's
+           better that you hear it here than at the download.</p>
       </details>
       <details>
-        <summary>What happens when v3 comes out?</summary>
-        <p>Existing customers get an upgrade price, not full price. v2 keeps working and keeps getting security and compatibility fixes for a year after v3 ships.</p>
+        <summary>Can I use these on a commercial game?</summary>
+        <p>Yes, with no revenue cap and no royalty. Buy once per person who uses it. There's no
+           licence check phoning home — the key is how you get updates and support, not a lock.</p>
       </details>
       <details>
-        <summary>Do you offer student or hobbyist pricing?</summary>
-        <p>Email us from your school address and we’ll sort you out. If money is genuinely the blocker, say so — we’d rather you had it.</p>
+        <summary>What happens to my files if I stop paying, or you stop shipping?</summary>
+        <p>Nothing. There is no subscription to stop paying, the apps keep working offline
+           forever, and your projects are plain JSON you can read in any text editor. If this
+           project ends tomorrow your design docs are still yours and still legible.</p>
       </details>
       <details>
-        <summary>How do refunds work?</summary>
-        <p>Reply to your receipt within 30 days. We refund the full amount, usually same day. You don’t need to justify it.</p>
+        <summary>Is there a trial?</summary>
+        <p>Not yet. The 30-day refund is the trial — buy it, use it properly on a real project,
+           and ask for your money back if it doesn't earn its place.</p>
+      </details>
+      <details>
+        <summary>Team or studio licences?</summary>
+        <p>Get in touch and we'll sort out a site licence and one invoice rather than making
+           you buy seats one at a time.</p>
       </details>
     </div>
   </div>
@@ -293,15 +430,15 @@
 <!-- ─────────────────────────── FINAL CTA ────────────────────────── -->
 <section class="cta">
   <div class="wrap wrap--narrow cta__inner">
-    <h2>Make the next scene the good-looking one</h2>
-    <p>Buy once, install in four minutes, refund in one email if it isn’t for you.</p>
-    <a class="btn btn--primary btn--lg" data-buy="indie">Get Nightfall — $39</a>
+    <h2>Find the sag before your players do</h2>
+    <p>Early access, one-time price, 30-day refund. Both apps are being built in the open.</p>
+    <a class="btn btn--primary btn--lg" href="#pricing">See pricing</a>
 
     <form class="signup" data-signup hidden>
       <label class="sr-only" for="email">Email address</label>
       <input id="email" type="email" name="email" placeholder="you@studio.com" required autocomplete="email">
-      <button class="btn btn--ghost" type="submit">Email me updates</button>
-      <p class="signup__note">Occasional release notes. No drip sequence, unsubscribe in one click.</p>
+      <button class="btn btn--ghost" type="submit">Email me when 1.0 lands</button>
+      <p class="signup__note">Release notes only. No drip sequence, unsubscribe in one click.</p>
     </form>
   </div>
 </section>
@@ -313,20 +450,21 @@
     <div class="footer__brand">
       <a class="brand" href="#top">
         <span class="brand__mark" aria-hidden="true"></span>
-        <span class="brand__name">Nightfall</span>
+        <span class="brand__name">Playfield</span>
       </a>
-      <p class="footer__tag">Made by two people who got tired of re-lighting things.</p>
+      <p class="footer__tag">Two desktop tools for designing the shape of a game.</p>
     </div>
     <nav class="footer__cols" aria-label="Footer">
       <div>
-        <h4>Product</h4>
-        <a href="#features">Features</a>
+        <h4>Apps</h4>
+        <a href="#progression">Game Progression</a>
+        <a href="#balance">Game Balance</a>
         <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="#">Changelog</a>
+        <a href="#early">Roadmap</a>
       </div>
       <div>
         <h4>Support</h4>
+        <a href="#faq">FAQ</a>
         <a href="#">Documentation</a>
         <a href="#">Contact</a>
         <a href="#">Refunds</a>
@@ -341,7 +479,7 @@
     </nav>
   </div>
   <div class="wrap footer__legal">
-    <p>© <span data-year></span> Your Company Ltd. All rights reserved.</p>
+    <p>© <span data-year></span> Playfield. All rights reserved.</p>
     <p><a href="#">Terms</a> · <a href="#">Privacy</a> · <a href="#">Licence</a></p>
   </div>
 </footer>

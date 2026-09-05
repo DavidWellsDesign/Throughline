@@ -5,36 +5,68 @@
   "use strict";
   var cfg = window.SITE_CONFIG || {};
 
-  /* ---------- 1. Checkout buttons -----------------------------------------
-     Any element with data-buy="tierKey" gets its href from cfg.checkout.
-     Falls back to cfg.contactUrl when the tier has no link (e.g. "Studio").  */
+  /* ---------- 1. Test-mode banner ------------------------------------------ */
+  var testbar = document.querySelector("[data-testbar]");
+  if (testbar && cfg.testMode) testbar.hidden = false;
+
+  /* ---------- 2. Prices ----------------------------------------------------
+     Written from config so the page and your Stripe products only disagree in
+     one place. [data-price] takes "$29"; [data-price-num] takes just "29",
+     because the pricing cards render the currency symbol separately.         */
+  document.querySelectorAll("[data-price]").forEach(function (el) {
+    var v = cfg.prices && cfg.prices[el.getAttribute("data-price")];
+    if (v) el.textContent = v;
+  });
+  document.querySelectorAll("[data-price-num]").forEach(function (el) {
+    var v = cfg.prices && cfg.prices[el.getAttribute("data-price-num")];
+    if (v) el.textContent = String(v).replace(/^[^0-9]+/, "");
+  });
+
+  /* ---------- 3. Checkout buttons -----------------------------------------
+     Any element with data-buy="key" gets its href from cfg.checkout.
+     Falls back to cfg.contactUrl when that product has no link yet, so an
+     unconfigured button never sends someone to a dead URL.                   */
   document.querySelectorAll("[data-buy]").forEach(function (el) {
     var key = el.getAttribute("data-buy");
     var url = (cfg.checkout && cfg.checkout[key]) || cfg.contactUrl || "#pricing";
     el.setAttribute("href", url);
 
-    // External hosted checkouts open in a new tab; mailto/anchors stay put.
-    if (/^https?:/i.test(url)) {
-      el.setAttribute("rel", "noopener");
-      // Uncomment if you prefer the checkout in a new tab:
-      // el.setAttribute("target", "_blank");
-    }
+    if (/^https?:/i.test(url)) el.setAttribute("rel", "noopener");
 
     el.addEventListener("click", function () {
-      // Analytics hook — fires for any provider. Replace with your own call.
-      if (typeof window.plausible === "function") window.plausible("checkout", { props: { tier: key } });
+      if (cfg.testMode) console.log("[checkout] " + key + " -> " + url);
+      // Analytics hooks — fire for any provider. Replace with your own calls.
+      if (typeof window.plausible === "function") window.plausible("checkout", { props: { product: key } });
       if (typeof window.gtag === "function") window.gtag("event", "begin_checkout", { item_id: key });
     });
   });
 
-  /* ---------- 2. Social links --------------------------------------------- */
+  /* ---------- 4. Config sanity checks --------------------------------------
+     Cheap guards against the two mistakes that cost real money: shipping test
+     links to production, and going live with buttons that were never wired.  */
+  (function auditCheckout() {
+    var links = cfg.checkout || {};
+    var isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === "file:";
+    Object.keys(links).forEach(function (key) {
+      var url = links[key];
+      if (!url) {
+        console.warn("[config] No checkout link for '" + key + "' — that button falls back to contactUrl.");
+      } else if (/\/test_/.test(url) && !cfg.testMode && !isLocal) {
+        console.error("[config] '" + key + "' points at a Stripe TEST link but testMode is false. Live buyers cannot pay.");
+      } else if (!/\/test_/.test(url) && cfg.testMode) {
+        console.warn("[config] '" + key + "' looks like a LIVE link while testMode is true — clicking it takes real money.");
+      }
+    });
+  })();
+
+  /* ---------- 5. Social links --------------------------------------------- */
   document.querySelectorAll("[data-social]").forEach(function (el) {
     var url = cfg.social && cfg.social[el.getAttribute("data-social")];
     if (url) { el.href = url; el.rel = "noopener"; el.target = "_blank"; }
     else { el.remove(); }
   });
 
-  /* ---------- 3. Email capture -------------------------------------------
+  /* ---------- 6. Email capture -------------------------------------------
      Shown only when an endpoint is configured, so the page never ships a
      form that silently drops addresses.                                     */
   var signup = document.querySelector("[data-signup]");
@@ -46,7 +78,7 @@
     signup.hidden = false;
   }
 
-  /* ---------- 4. Hero demo embed ------------------------------------------ */
+  /* ---------- 7. Hero demo embed ------------------------------------------ */
   var slot = document.querySelector("[data-demo-slot]");
   if (slot && cfg.demoEmbedUrl) {
     slot.innerHTML = "";
@@ -59,13 +91,13 @@
     slot.appendChild(frame);
   }
 
-  /* ---------- 5. Sticky nav shadow ---------------------------------------- */
+  /* ---------- 8. Sticky nav shadow ---------------------------------------- */
   var nav = document.getElementById("nav");
   var onScroll = function () { nav.classList.toggle("is-stuck", window.scrollY > 8); };
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---------- 6. Mobile menu ---------------------------------------------- */
+  /* ---------- 9. Mobile menu ---------------------------------------------- */
   var toggle = document.querySelector(".nav__toggle");
   var menu = document.getElementById("nav-mobile");
   if (toggle && menu) {
@@ -79,9 +111,9 @@
     });
   }
 
-  /* ---------- 7. Reveal on scroll (skipped for reduced-motion) ------------- */
+  /* ---------- 10. Reveal on scroll (skipped for reduced-motion) ------------- */
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-  var targets = document.querySelectorAll(".card, .step, .tier, .quote, .shot");
+  var targets = document.querySelectorAll(".card, .duo__item, .tier, .status__col, .shot");
   if (!reduce && "IntersectionObserver" in window) {
     targets.forEach(function (el) { el.setAttribute("data-reveal", ""); });
     var io = new IntersectionObserver(function (entries) {
@@ -95,7 +127,7 @@
     targets.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- 8. Footer year ---------------------------------------------- */
+  /* ---------- 11. Footer year ---------------------------------------------- */
   var year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
 })();

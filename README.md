@@ -1,25 +1,37 @@
-# Landing page template
+# Playfield — landing page
 
-A single-page product landing page for a paid game/software tool. No build step, no dependencies,
-no framework — three files you can host anywhere static.
+One page selling two desktop apps separately: **Game Progression** (node-graph campaign planner)
+and **Game Balance** (curve/economy tuner), plus a discounted bundle. Static HTML/CSS/JS, no
+build step, no dependencies, no framework.
 
 ```
 index.html    all copy and structure
 success.html  post-purchase page your provider redirects to
 styles.css    design tokens at the top of :root — change those to rebrand
-config.js     checkout URLs, email endpoint, social links   ← the only file you MUST edit
+config.js     checkout URLs, prices, test-mode flag         ← the only file you MUST edit
 main.js       wires config.js into the page
 assets/       favicon, screenshots, og-image
-functions/    optional serverless fulfilment (Stripe webhook -> licence email)
+functions/    Stripe webhook -> licence keys -> email (one key per app)
+scripts/      `npm test` — 18 end-to-end fulfilment tests, no Stripe account needed
 ```
 
 ## Run it locally
 
 ```bash
-python3 -m http.server 8000
+npm run dev
 ```
 
 Then open http://localhost:8000
+
+## Test the payment flow
+
+```bash
+npm test
+```
+
+Signs payloads exactly the way Stripe does and pushes them through the real webhook handler —
+covers both apps, the bundle, forged signatures, duplicate deliveries and provider outages.
+No Stripe account or network access required. See [STRIPE.md](STRIPE.md) for the live test-mode run.
 
 ## Going live: the checklist
 
