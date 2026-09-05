@@ -57,9 +57,22 @@ Created in the **David Wells sandbox** account — nothing was touched in live m
 | `bundle`      | Throughline Progression + Balance | $29   | `prod_VCaOVXpLKMxHJi` | `price_1UCBE6QeBWmfPHBfLbsxnBSh`  |
 
 All three have `metadata.product` set, promotion codes enabled, statement descriptor `THROUGHLINE`,
-and redirect to `http://localhost:8000/success.html?session_id={CHECKOUT_SESSION_ID}` after
-payment — so a local test purchase lands on your own success page. **Change that redirect to your
-real domain before going live.**
+and redirect after payment to:
+
+```
+https://preview.throughline-site-ejs.pages.dev/success.html?session_id={CHECKOUT_SESSION_ID}
+```
+
+That is the deployed Cloudflare Pages preview, so a test purchase runs end to end over real HTTPS
+rather than through localhost. **Point this at your own domain once you have one.**
+
+Payment Link ids, for updating the redirect later:
+
+| SKU | Payment Link id |
+| --- | --- |
+| `progression` | `plink_1UCBEUQeBWmfPHBff5aVNlNl` |
+| `balance` | `plink_1UCBEdQeBWmfPHBfhbvTdhxN` |
+| `bundle` | `plink_1UCBEmQeBWmfPHBf8dV6Upvw` |
 
 ---
 
@@ -201,10 +214,11 @@ stripe listen --forward-to localhost:8788/api/stripe-webhook
 ```
 
 `stripe listen` prints a **different** signing secret starting `whsec_` — put that one in your
-local env, not the dashboard's. Then serve the site and functions locally and buy something:
+local env, not the dashboard's. Or skip local entirely — the links now point at the deployed preview, so you can just open
+<https://preview.throughline-site-ejs.pages.dev> and buy something. To iterate locally instead:
 
 ```bash
-npx wrangler pages dev .
+npx wrangler pages dev
 ```
 
 Open the page, click a buy button, and pay with test card **4242 4242 4242 4242**, any future
@@ -213,6 +227,7 @@ expiry, any CVC, any postcode.
 What to confirm:
 
 - [ ] The test-mode banner is visible on the page
+- [ ] The webhook secrets are set on the deployment (otherwise every event 400s)
 - [ ] Checkout shows the right product name and price
 - [ ] You land on `success.html`
 - [ ] `stripe listen` logs `checkout.session.completed` and a **200** from your endpoint
@@ -249,7 +264,7 @@ care about there.
 
 - [ ] `testMode: false` in `config.js`
 - [ ] Live-mode Payment Links in all three `checkout` slots (test links contain `/test_`)
-- [ ] Redirect URL changed from `localhost:8000` to your real domain
+- [ ] Redirect URL changed from the `*.pages.dev` preview to your real domain
 - [ ] `metadata.product` set on all three **live** links — it does not carry over from test mode
 - [ ] Webhook registered against the **live** endpoint, with the live signing secret
 - [ ] Stripe Tax enabled and origin address set
