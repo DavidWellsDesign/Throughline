@@ -1,0 +1,18 @@
+# macOS
+.DS_Store
+._*
+
+# Editors
+.idea/
+.vscode/
+*.swp
+
+# Secrets — Stripe/Resend keys belong in your host's env settings, never here
+.env
+.env.*
+.dev.vars
+
+# Dependencies / build output
+node_modules/
+dist/
+.wrangler/
