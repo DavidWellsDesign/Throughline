@@ -17,6 +17,10 @@
     var v = cfg.prices && cfg.prices[el.getAttribute("data-price")];
     if (v) el.textContent = v;
   });
+  document.querySelectorAll("[data-future]").forEach(function (el) {
+    var v = cfg.futurePrices && cfg.futurePrices[el.getAttribute("data-future")];
+    if (v) el.textContent = v;
+  });
   document.querySelectorAll("[data-price-num]").forEach(function (el) {
     var v = cfg.prices && cfg.prices[el.getAttribute("data-price-num")];
     if (v) el.textContent = String(v).replace(/^[^0-9]+/, "");

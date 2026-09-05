@@ -3,9 +3,7 @@
    Read at runtime by main.js.
 --------------------------------------------------------------------------- */
 window.SITE_CONFIG = {
-  // TODO: placeholder studio name — find/replace "Playfield" across
-  // index.html + success.html when you pick the real one.
-  siteName: "Playfield",
+  siteName: "Greybox",
 
   /* -------------------------------------------------------------------------
      TEST MODE
@@ -24,21 +22,31 @@ window.SITE_CONFIG = {
      See STRIPE.md for how to create these.
   ------------------------------------------------------------------------- */
   checkout: {
-    progression: "", // Game Progression, standalone
-    balance: "",     // Game Balance, standalone
-    bundle: ""       // both apps, discounted
+    // Stripe SANDBOX links (test mode). Swap for live ones before launch —
+    // and remember metadata.product does NOT carry over from test to live.
+    progression: "https://buy.stripe.com/test_eVq9AVa510KefFV3fc4Rq00",
+    balance:     "https://buy.stripe.com/test_14AdRbelhfF851h2b84Rq01",
+    bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02"
   },
 
   // Prices shown on the page. Keep these in step with the Stripe products —
   // nothing verifies that they match, and a mismatch at checkout kills trust.
   prices: {
-    progression: "$29",
-    balance: "$29",
-    bundle: "$49"
+    progression: "$19",
+    balance: "$19",
+    bundle: "$29"
+  },
+
+  // The published 1.0 price. Shown on the page as the "goes up to" figure —
+  // saying it out loud is what makes the early-access price a reason to buy now.
+  futurePrices: {
+    progression: "$39",
+    balance: "$39",
+    bundle: "$59"
   },
 
   // Used when a checkout link is empty.
-  contactUrl: "mailto:hello@example.com?subject=Playfield",
+  contactUrl: "mailto:hello@example.com?subject=Greybox",
 
   // Where Stripe sends buyers after payment. Set this as the redirect in the
   // Payment Link itself; it's listed here for reference. See STRIPE.md.

@@ -8,11 +8,13 @@ Stripe Payment Links and paste them into [`config.js`](config.js):
 ```js
 testMode: true,
 checkout: {
-  progression: "https://buy.stripe.com/test_aBc123",
-  balance:     "https://buy.stripe.com/test_dEf456",
-  bundle:      "https://buy.stripe.com/test_gHi789"
+  progression: "https://buy.stripe.com/test_eVq9AVa510KefFV3fc4Rq00",
+  balance:     "https://buy.stripe.com/test_14AdRbelhfF851h2b84Rq01",
+  bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02"
 }
 ```
+
+Those three sandbox links already exist and are wired up — see "What's already set up" below.
 
 Every `data-buy` button on the page picks them up. No backend, no keys in the frontend.
 
@@ -44,11 +46,33 @@ It needs no Stripe account, no API key and no network. Run it after any change t
 
 ---
 
+## What's already set up (sandbox / test mode)
+
+Created in the **David Wells sandbox** account — nothing was touched in live mode.
+
+| SKU           | Product                       | Price | Product ID            | Price ID                          |
+| ------------- | ----------------------------- | ----- | --------------------- | --------------------------------- |
+| `progression` | Greybox Progression           | $19   | `prod_VCaOzrtsb40e9x` | `price_1UCBDoQeBWmfPHBfNLrwdEIW`  |
+| `balance`     | Greybox Balance               | $19   | `prod_VCaOCtDarhoPmi` | `price_1UCBDxQeBWmfPHBfbY60aD1f`  |
+| `bundle`      | Greybox Progression + Balance | $29   | `prod_VCaOVXpLKMxHJi` | `price_1UCBE6QeBWmfPHBfLbsxnBSh`  |
+
+All three have `metadata.product` set, promotion codes enabled, statement descriptor `GREYBOX`,
+and redirect to `http://localhost:8000/success.html?session_id={CHECKOUT_SESSION_ID}` after
+payment — so a local test purchase lands on your own success page. **Change that redirect to your
+real domain before going live.**
+
+---
+
 ## On Stripe's managed-payments / merchant-of-record direction
 
-Stripe has been moving into merchant-of-record territory (they acquired Lemon Squeezy in 2024).
-**I can't confirm the current product name, pricing, or availability in your country from here —
-check your dashboard, since this moves fast.**
+**Update:** this is now live enough to appear in the API. Payment Links accept a
+`managed_payments.enabled` boolean, documented as "Stripe's merchant of record solution". Your
+three sandbox links currently have it **disabled** — I left it off because turning it on changes
+who is legally selling and what the fee is, which is your call, not mine.
+
+I still can't see the pricing or your country's eligibility from here — check the dashboard. But
+the plan you described works: flip `managed_payments.enabled` to `true` on the links when you want
+it, and nothing else about the integration changes.
 
 What matters for your decision is this: **the integration is identical either way.** MoR is an
 account-level setting about who is legally selling and who remits tax. Your page still points at a
@@ -79,11 +103,11 @@ real in live mode once you're happy.
 
 Dashboard → **Product catalogue** → *Add product*, three times:
 
-| Product name              | Price | `metadata.product` |
-| ------------------------- | ----- | ------------------ |
-| Game Progression          | $29   | `progression`      |
-| Game Balance              | $29   | `balance`          |
-| Progression + Balance     | $49   | `bundle`           |
+| Product name                  | Price | `metadata.product` |
+| ----------------------------- | ----- | ------------------ |
+| Greybox Progression           | $19   | `progression`      |
+| Greybox Balance               | $19   | `balance`          |
+| Greybox Progression + Balance | $29   | `bundle`           |
 
 Then **Payment Links** → *Create* for each one, and set:
 
@@ -207,6 +231,7 @@ exercise fulfilment end to end.
 
 - [ ] `testMode: false` in `config.js`
 - [ ] Live-mode Payment Links in all three `checkout` slots (test links contain `/test_`)
+- [ ] Redirect URL changed from `localhost:8000` to your real domain
 - [ ] `metadata.product` set on all three **live** links — it does not carry over from test mode
 - [ ] Webhook registered against the **live** endpoint, with the live signing secret
 - [ ] Stripe Tax enabled and origin address set

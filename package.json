@@ -1,8 +1,8 @@
 {
-  "name": "playfield-site",
+  "name": "greybox-site",
   "private": true,
   "version": "0.1.0",
-  "description": "Landing page and Stripe fulfilment for Game Progression and Game Balance.",
+  "description": "Landing page and Stripe fulfilment for Greybox Progression and Greybox Balance.",
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000",

@@ -265,6 +265,13 @@ code{ font-family:var(--mono); font-size:.9em; background:var(--surface-hi);
 .tier__price{ font-size:2.9rem; font-weight:700; letter-spacing:-.04em; margin-top:10px; }
 .tier__cur{ font-size:1.3rem; vertical-align:super; color:var(--text-dim); margin-right:2px; }
 .tier__meta{ color:var(--text-faint); font-size:.85rem; margin-top:2px; }
+.tier__rise{
+  margin-top:6px; font-size:.8rem; color:var(--accent-soft);
+  background:rgba(124,108,255,.10); border:1px solid rgba(124,108,255,.22);
+  border-radius:999px; padding:3px 10px;
+  /* .tier is a flex column, so inline-block still stretches — pin it. */
+  align-self:flex-start;
+}
 .tier__list{ margin:22px 0 26px; display:grid; gap:11px; font-size:.93rem; color:var(--text-dim); }
 .tier__list li{ display:flex; gap:10px; align-items:flex-start; }
 .tier__list li::before{
