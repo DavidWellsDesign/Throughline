@@ -153,7 +153,19 @@
     targets.forEach(function (el) { io.observe(el); });
   }
 
-  /* ---------- 11. Footer year ---------------------------------------------- */
+  /* ---------- 11. Legal identity ------------------------------------------
+     Filled from config so the three legal pages can never disagree about who
+     the seller is.                                                           */
+  document.querySelectorAll("[data-legal]").forEach(function (el) {
+    var v = cfg.legal && cfg.legal[el.getAttribute("data-legal")];
+    if (v) el.textContent = v;
+  });
+  if (cfg.legal && /^\[/.test(cfg.legal.entityName || "")) {
+    console.error("[config] legal.entityName and legal.address are still placeholders. " +
+                  "UK/EU distance-selling rules require a real trader name and postal address.");
+  }
+
+  /* ---------- 12. Footer year ---------------------------------------------- */
   var year = document.querySelector("[data-year]");
   if (year) year.textContent = new Date().getFullYear();
 })();

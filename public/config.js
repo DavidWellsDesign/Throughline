@@ -72,6 +72,20 @@ window.SITE_CONFIG = {
   // Used when a checkout link is empty.
   contactUrl: "mailto:hello@throughlinetools.com?subject=Throughline",
 
+  /* -------------------------------------------------------------------------
+     LEGAL IDENTITY
+     UK and EU distance-selling rules require a trader to identify themselves
+     to consumers: a real name and a real postal address, not just an email.
+     These fill in across terms.html, privacy.html and refunds.html.
+     ⚠ You MUST replace all three before taking real money.
+  ------------------------------------------------------------------------- */
+  legal: {
+    entityName: "[YOUR NAME OR COMPANY NAME]",
+    address: "[YOUR POSTAL ADDRESS]",
+    email: "hello@throughlinetools.com",
+    jurisdiction: "England and Wales"
+  },
+
   // Where Stripe sends buyers after payment. Set this as the redirect in the
   // Payment Link itself; it's listed here for reference. See STRIPE.md.
   successUrl: "/success.html",
