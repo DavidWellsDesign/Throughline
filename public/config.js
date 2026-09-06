@@ -61,7 +61,7 @@ window.SITE_CONFIG = {
   },
 
   // Used when a checkout link is empty.
-  contactUrl: "mailto:hello@example.com?subject=Throughline",
+  contactUrl: "mailto:hello@throughlinetools.com?subject=Throughline",
 
   // Where Stripe sends buyers after payment. Set this as the redirect in the
   // Payment Link itself; it's listed here for reference. See STRIPE.md.

@@ -67,7 +67,18 @@ npx wrangler pages deploy                    # production (branch: main)
 ```
 
 The Pages project (`throughline-site`) and both KV namespaces already exist and their ids are in
-[`wrangler.jsonc`](wrangler.jsonc). Preview URL: <https://preview.throughline-site-ejs.pages.dev>
+[`wrangler.jsonc`](wrangler.jsonc). URLs:
+
+| | |
+| --- | --- |
+| Production | <https://throughlinetools.com> (once the custom domain is attached) |
+| Production fallback | <https://throughline-site-ejs.pages.dev> |
+| Preview branch | <https://preview.throughline-site-ejs.pages.dev> |
+
+Attaching the custom domain is a dashboard step — wrangler has no command for it. Pages →
+`throughline-site` → Custom domains → Set up a domain. Add `throughlinetools.com` and
+`www.throughlinetools.com`; since the domain is already on Cloudflare, the DNS records are created
+for you.
 
 Set the secrets in the Cloudflare dashboard (Pages → your project → Settings → Variables and
 Secrets), **encrypted**, never in this repo:
@@ -77,7 +88,7 @@ Secrets), **encrypted**, never in this repo:
 | `STRIPE_WEBHOOK_SECRET` | `whsec_…` from Developers → Webhooks → your endpoint |
 | `STRIPE_LIVEMODE` | `true` on production, `false` on any test deployment |
 | `RESEND_API_KEY` | `re_…`, or swap `sendEmail()` for your provider |
-| `FROM_EMAIL` | `Throughline <hello@yourdomain.com>` |
+| `FROM_EMAIL` | `Throughline <hello@throughlinetools.com>` |
 
 Set these separately for Production and Preview — that is the point of `STRIPE_LIVEMODE`, and the
 webhook refuses events whose mode doesn't match.

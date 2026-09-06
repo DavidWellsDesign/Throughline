@@ -60,11 +60,13 @@ All three have `metadata.product` set, promotion codes enabled, statement descri
 and redirect after payment to:
 
 ```
-https://preview.throughline-site-ejs.pages.dev/success.html?session_id={CHECKOUT_SESSION_ID}
+https://throughlinetools.com/success.html?session_id={CHECKOUT_SESSION_ID}
 ```
 
-That is the deployed Cloudflare Pages preview, so a test purchase runs end to end over real HTTPS
-rather than through localhost. **Point this at your own domain once you have one.**
+That redirect only resolves once `throughlinetools.com` is attached to the Pages project as a
+custom domain (dashboard → Pages → throughline-site → Custom domains). Until then a test purchase
+completes and charges nothing, but lands on a dead page. The `*.pages.dev` URLs keep working
+either way.
 
 Payment Link ids, for updating the redirect later:
 
@@ -127,7 +129,7 @@ Then **Payment Links** → *Create* for each one, and set:
 - **Metadata** → add `product` = `progression` / `balance` / `bundle`.
   **This is the bit that matters.** The webhook reads it to decide which licence keys to issue;
   without it fulfilment fails loudly (by design — better a 500 and a retry than a wrong key).
-- **After payment → Redirect to your site**: `https://yourdomain.com/success.html`
+- **After payment → Redirect to your site**: `https://throughlinetools.com/success.html`
 - **Allow promotion codes** — on, so you can run a launch discount without new links
 - **Collect tax automatically** — on, once Stripe Tax is set up (Step 3)
 - Email is collected automatically; you need it for fulfilment
@@ -162,7 +164,7 @@ the bottom of the file). It:
 5. returns 500 on transient failure so Stripe retries with backoff
 
 **Register it:** Developers → **Webhooks** → *Add endpoint* →
-`https://yourdomain.com/api/stripe-webhook`, event `checkout.session.completed`. Copy the signing
+`https://throughlinetools.com/api/stripe-webhook`, event `checkout.session.completed`. Copy the signing
 secret.
 
 **Set secrets** (Cloudflare Pages → Settings → Environment variables, encrypted — never commit them):
@@ -170,7 +172,7 @@ secret.
 ```
 STRIPE_WEBHOOK_SECRET=whsec_...
 RESEND_API_KEY=re_...
-FROM_EMAIL=Throughline <hello@yourdomain.com>
+FROM_EMAIL=Throughline <hello@throughlinetools.com>
 ```
 
 Also set **`STRIPE_LIVEMODE`** — `true` on production, `false` on any test deployment. The webhook
@@ -214,8 +216,8 @@ stripe listen --forward-to localhost:8788/api/stripe-webhook
 ```
 
 `stripe listen` prints a **different** signing secret starting `whsec_` — put that one in your
-local env, not the dashboard's. Or skip local entirely — the links now point at the deployed preview, so you can just open
-<https://preview.throughline-site-ejs.pages.dev> and buy something. To iterate locally instead:
+local env, not the dashboard's. Or skip local entirely — the links point at <https://throughlinetools.com>, so you can open the
+site and buy something once the custom domain is attached. To iterate locally instead:
 
 ```bash
 npx wrangler pages dev

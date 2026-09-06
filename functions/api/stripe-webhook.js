@@ -16,7 +16,7 @@
                              the event's livemode matches this deployment, so a
                              sandbox purchase can never issue a real licence.
      RESEND_API_KEY          re_...      or swap sendEmail() for your provider
-     FROM_EMAIL              "Throughline <hello@yourdomain.com>"
+     FROM_EMAIL              "Throughline <hello@throughlinetools.com>"
      DELIVERY_ESTIMATE       "Q2 2027" — while pre-ordering, the date promised in
                              the receipt. Keep it identical to config.js, or the
                              page and the receipt will contradict each other.
@@ -214,7 +214,7 @@ async function sendEmail(env, to, product, keys) {
     : `<p>Thanks for buying ${product.label}.</p>
        <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
        ${rows}
-       <p style="margin-top:24px"><a href="https://yourdomain.com/download">Download your apps</a></p>
+       <p style="margin-top:24px"><a href="https://throughlinetools.com/download">Download your apps</a></p>
        <p>Any trouble at all, just reply to this email. 30-day refunds, no questions.</p>`;
 
   const res = await fetch("https://api.resend.com/emails", {
