@@ -36,9 +36,13 @@
      Any element with data-buy="key" gets its href from cfg.checkout.
      Falls back to cfg.contactUrl when that product has no link yet, so an
      unconfigured button never sends someone to a dead URL.                   */
+  // One source of truth for which link set is live, used by the buttons and
+  // the audit below alike.
+  var activeLinks = (cfg.testMode ? cfg.checkout : cfg.liveCheckout) || {};
+
   document.querySelectorAll("[data-buy]").forEach(function (el) {
     var key = el.getAttribute("data-buy");
-    var url = (cfg.checkout && cfg.checkout[key]) || cfg.contactUrl || "#pricing";
+    var url = activeLinks[key] || cfg.contactUrl || "#pricing";
     el.setAttribute("href", url);
 
     if (/^https?:/i.test(url)) el.setAttribute("rel", "noopener");
@@ -55,7 +59,6 @@
      Cheap guards against the two mistakes that cost real money: shipping test
      links to production, and going live with buttons that were never wired.  */
   (function auditCheckout() {
-    var links = cfg.checkout || {};
     var isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === "file:";
     if (cfg.preorder && cfg.deliveryEstimate === cfg.DELIVERY_ESTIMATE_PLACEHOLDER) {
       console.error(
@@ -64,14 +67,20 @@
         "of chargebacks."
       );
     }
-    Object.keys(links).forEach(function (key) {
-      var url = links[key];
+    ["progression", "balance", "bundle"].forEach(function (key) {
+      var url = activeLinks[key];
       if (!url) {
-        console.warn("[config] No checkout link for '" + key + "' — that button falls back to contactUrl.");
-      } else if (/\/test_/.test(url) && !cfg.testMode && !isLocal) {
-        console.error("[config] '" + key + "' points at a Stripe TEST link but testMode is false. Live buyers cannot pay.");
-      } else if (!/\/test_/.test(url) && cfg.testMode) {
-        console.warn("[config] '" + key + "' looks like a LIVE link while testMode is true — clicking it takes real money.");
+        console.warn("[config] No " + (cfg.testMode ? "test" : "LIVE") + " checkout link for '" + key +
+                     "' — that button falls back to contactUrl.");
+        return;
+      }
+      var isTestLink = /\/test_/.test(url);
+      if (isTestLink && !cfg.testMode && !isLocal) {
+        console.error("[config] '" + key + "' is a Stripe TEST link but testMode is false. " +
+                      "Live buyers cannot pay you.");
+      } else if (!isTestLink && cfg.testMode) {
+        console.warn("[config] '" + key + "' is a LIVE link while testMode is true — clicking it " +
+                     "takes real money.");
       }
     });
   })();

@@ -5,16 +5,27 @@
 Three things are for sale — Game Progression, Game Balance, and the bundle — so you create three
 Stripe Payment Links and paste them into [`config.js`](config.js):
 
+Both link sets are already in `public/config.js`. `testMode` picks between them, so **going live
+is one boolean**:
+
 ```js
-testMode: true,
-checkout: {
-  progression: "https://buy.stripe.com/test_eVq9AVa510KefFV3fc4Rq00",
-  balance:     "https://buy.stripe.com/test_14AdRbelhfF851h2b84Rq01",
-  bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02"
-}
+testMode: true,        // false => liveCheckout is used and real money moves
+checkout:     { /* sandbox links */ },
+liveCheckout: { /* live links   */ }
 ```
 
-Those three sandbox links already exist and are wired up — see "What's already set up" below.
+`main.js` logs an error if a test link is ever in use with `testMode: false`, and a warning the
+other way round.
+
+### Live IDs (account `acct_1UC9DuHUl30CqJha`)
+
+| SKU | Product | Price | Payment Link |
+| --- | --- | --- | --- |
+| `progression` | `prod_VCaOzrtsb40e9x` | `price_1UCEt3HUl30CqJhaz0xi2mck` ($19) | `plink_1UCEt6HUl30CqJhaiUMuS1Ji` |
+| `balance` | `prod_VCaOCtDarhoPmi` | `price_1UCEt3HUl30CqJha5AxBkjWi` ($19) | `plink_1UCEt5HUl30CqJhaLt2v6tpr` |
+| `bundle` | `prod_VCaOVXpLKMxHJi` | `price_1UCEt1HUl30CqJhazjIN3yJD` ($29) | `plink_1UCEt5HUl30CqJhaNarLLQP9` |
+
+The Stripe connector is **read-only in live mode**, so live changes are dashboard-only.
 
 Every `data-buy` button on the page picks them up. No backend, no keys in the frontend.
 

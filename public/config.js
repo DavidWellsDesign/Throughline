@@ -36,12 +36,21 @@ window.SITE_CONFIG = {
      back to `contactUrl`, so an unconfigured button never silently 404s.
      See STRIPE.md for how to create these.
   ------------------------------------------------------------------------- */
+  // Sandbox links — used while testMode is true. No real money moves.
   checkout: {
-    // Stripe SANDBOX links (test mode). Swap for live ones before launch —
-    // and remember metadata.product does NOT carry over from test to live.
     progression: "https://buy.stripe.com/test_eVq9AVa510KefFV3fc4Rq00",
     balance:     "https://buy.stripe.com/test_14AdRbelhfF851h2b84Rq01",
     bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02"
+  },
+
+  // Live links — used the moment testMode flips to false. These take REAL
+  // money. Both sets live here so going live is one boolean, not three
+  // copy-pastes at the worst possible moment; main.js warns if the set in use
+  // doesn't match the mode.
+  liveCheckout: {
+    progression: "https://buy.stripe.com/4gMdR9dK0bRX68nbJNbsc02",
+    balance:     "https://buy.stripe.com/eVq6oHeO47BHfIXeVZbsc00",
+    bundle:      "https://buy.stripe.com/9B63cv6hycW154jdRVbsc01"
   },
 
   // Prices shown on the page. Keep these in step with the Stripe products —
