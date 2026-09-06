@@ -278,6 +278,15 @@ await check("missing metadata without a secret key fails loudly (500)", async ()
   return (await handleStripeWebhook(post(body, sign(body)), h.env)).status === 500;
 });
 
+await check("the 500 body names the reason, so Stripe's dashboard is self-diagnosing", async () => {
+  const h = makeEnv();
+  globalThis.fetch = async () => ({ ok: false, status: 403, text: async () => "domain not verified" });
+  const body = sessionEvent({ id: "evt_reason", product: "bundle" });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  const text = await res.text();
+  return res.status === 500 && text.includes("403") && text.includes("domain not verified");
+});
+
 await check("email outage returns 500 so Stripe retries, and no dedupe marker is left", async () => {
   const h = makeEnv();
   globalThis.fetch = async () => ({ ok: false, status: 503, text: async () => "unavailable" });

@@ -88,7 +88,14 @@ export async function handleStripeWebhook(request, env) {
     // 500 makes Stripe retry with backoff — the right call for a transient
     // failure (email provider down, KV write failed). Log it so you can see it.
     console.error("Fulfilment failed", event.id, err);
-    return new Response("Fulfilment failed", { status: 500 });
+
+    // Put the reason in the response body too. Stripe shows response bodies on
+    // each delivery attempt, so a failure explains itself in the dashboard
+    // instead of needing a log tail. Only a caller holding the signing secret
+    // can reach this line, so there is no disclosure to the public here — and
+    // the messages carry provider errors, never credentials.
+    var reason = (err && err.message) ? String(err.message) : "unknown error";
+    return new Response("Fulfilment failed: " + reason.slice(0, 500), { status: 500 });
   }
 
   if (env.LICENCES) {
