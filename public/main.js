@@ -17,6 +17,12 @@
     var v = cfg.prices && cfg.prices[el.getAttribute("data-price")];
     if (v) el.textContent = v;
   });
+  // Delivery estimate, written from config so the page, the FAQ and the final
+  // CTA can never disagree about the date you promised.
+  document.querySelectorAll("[data-delivery]").forEach(function (el) {
+    if (cfg.deliveryEstimate) el.textContent = cfg.deliveryEstimate;
+  });
+
   document.querySelectorAll("[data-future]").forEach(function (el) {
     var v = cfg.futurePrices && cfg.futurePrices[el.getAttribute("data-future")];
     if (v) el.textContent = v;
@@ -51,6 +57,13 @@
   (function auditCheckout() {
     var links = cfg.checkout || {};
     var isLocal = /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname) || location.protocol === "file:";
+    if (cfg.preorder && cfg.deliveryEstimate === cfg.DELIVERY_ESTIMATE_PLACEHOLDER) {
+      console.error(
+        "[config] deliveryEstimate is still the placeholder (\"" + cfg.deliveryEstimate +
+        "\"). Set a real date before going live — a vague pre-order date is the main cause " +
+        "of chargebacks."
+      );
+    }
     Object.keys(links).forEach(function (key) {
       var url = links[key];
       if (!url) {

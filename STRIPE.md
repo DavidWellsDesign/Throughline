@@ -246,6 +246,32 @@ exercise fulfilment end to end.
 
 ---
 
+## Pre-order mode
+
+The apps aren't released, so the site sells pre-orders. Three things must agree, or a buyer can
+truthfully say they were misled — which is how a dispute becomes a lost dispute:
+
+| Where | What it must say |
+| --- | --- |
+| The page | `preorder: true` and `deliveryEstimate` in `public/config.js` |
+| The Stripe checkout | Each product's **description** opens with `PRE-ORDER — not yet released` and states the same date |
+| The receipt email | `PREORDER=true` and `DELIVERY_ESTIMATE` env vars on the deployment |
+
+`DELIVERY_ESTIMATE` and `config.js`'s `deliveryEstimate` are separate values that must be kept in
+step by hand. Nothing enforces it — if you change one, change the other and the Stripe product
+descriptions too.
+
+**Refund policy is deliberately wider than usual:** full refund at any point before delivery, plus
+30 days after. That's the honest trade for taking money ahead of the work, and it is much cheaper
+than a chargeback (which costs the sale, a ~$15 fee, and counts against your dispute ratio).
+
+**When you ship**, every buyer is already recorded. The KV `email:` index maps each buyer's address
+to their licence keys:
+
+```bash
+npx wrangler kv key list --namespace-id 7e3241f188384d40aeb88778926f0a92 --prefix email:
+```
+
 ## Going live: test and live are separate accounts
 
 Nothing carries over. Your sandbox (`acct_1UC9EAQeBWmfPHBf`) and live account
@@ -276,6 +302,10 @@ care about there.
       statement is a chargeback waiting to happen
 - [ ] `npm test` passing against the final webhook
 - [ ] `STRIPE_LIVEMODE=true` set on production, `false` on any preview deployment
+- [ ] `deliveryEstimate` in `config.js` is a real date, not the `Q2 2027` placeholder
+- [ ] `PREORDER=true` and `DELIVERY_ESTIMATE` set on the deployment, matching `config.js`
+- [ ] Live product descriptions carry the `PRE-ORDER — not yet released` prefix and the same date
+- [ ] Terms and Refunds pages written, and they state the pre-order terms
 
 ## When to graduate from Payment Links
 

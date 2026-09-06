@@ -16,6 +16,21 @@ window.SITE_CONFIG = {
   testMode: true,
 
   /* -------------------------------------------------------------------------
+     PRE-ORDER MODE
+     The apps aren't released yet, so buyers are paying now and receiving the
+     software later. This flag drives every "you are pre-ordering" notice on
+     the page, the success page and the receipt email.
+
+     ⚠ TODO: `deliveryEstimate` below is a PLACEHOLDER. Set your real estimate
+     before going live — a vague or missing date is the single biggest driver
+     of chargebacks on pre-orders, and main.js will warn until you change it.
+     Keep it conservative: shipping early delights, shipping late disputes.
+  ------------------------------------------------------------------------- */
+  preorder: true,
+  deliveryEstimate: "Q2 2027",
+  DELIVERY_ESTIMATE_PLACEHOLDER: "Q2 2027", // audit compares against this
+
+  /* -------------------------------------------------------------------------
      CHECKOUT LINKS — one per thing you sell.
      Paste the Stripe Payment Link URL for each. Leave "" and the button falls
      back to `contactUrl`, so an unconfigured button never silently 404s.

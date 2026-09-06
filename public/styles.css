@@ -351,6 +351,15 @@ code{ font-family:var(--mono); font-size:.9em; background:var(--surface-hi);
 .footer__legal a:hover{ color:var(--text); }
 
 
+/* ------------------------ pre-order disclosure flag ----------------------- */
+.preorder-flag{
+  max-width:620px; margin:26px auto 0; text-align:left;
+  background:rgba(53,214,200,.07); border:1px solid rgba(53,214,200,.30);
+  border-left-width:3px; border-radius:var(--radius);
+  padding:16px 20px; color:var(--text-dim); font-size:.92rem;
+}
+.preorder-flag strong{ color:var(--text); }
+
 /* ---------------------------- test-mode banner --------------------------- */
 .testbar{
   position:relative; z-index:110; text-align:center;

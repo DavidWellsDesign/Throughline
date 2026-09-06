@@ -17,6 +17,11 @@
                              sandbox purchase can never issue a real licence.
      RESEND_API_KEY          re_...      or swap sendEmail() for your provider
      FROM_EMAIL              "Throughline <hello@yourdomain.com>"
+     DELIVERY_ESTIMATE       "Q2 2027" — while pre-ordering, the date promised in
+                             the receipt. Keep it identical to config.js, or the
+                             page and the receipt will contradict each other.
+     PREORDER                "true" while the apps are unreleased. Switches the
+                             receipt from a download link to an order confirmation.
    Optional bindings:
      LICENCES                Cloudflare KV namespace — stores keys + idempotency
 =========================================================================== */
@@ -183,19 +188,34 @@ function makeLicenceKey(prefix = "PF") {
 
 /* ----------------------------------------------------------------- email */
 async function sendEmail(env, to, product, keys) {
+  const preorder = String(env.PREORDER) === "true";
+  const eta = env.DELIVERY_ESTIMATE || "a date I'll confirm shortly";
+
   const rows = keys.map(({ app, key }) => `
     <p style="margin:18px 0 4px;color:#555">${CATALOGUE[app].label}</p>
     <p style="font:600 18px ui-monospace,Menlo,monospace;background:#f4f4f7;
               padding:14px 18px;border-radius:8px;display:inline-block;margin:0">${key}</p>`).join("");
 
-  const html = `
-    <p>Thanks for buying ${product.label}.</p>
-    <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
-    ${rows}
-    <p style="margin-top:24px"><a href="https://yourdomain.com/download">Download your apps</a></p>
-    <p>These are early-access builds and aren't code-signed yet, so on macOS you'll need to
-       right-click the app and choose Open the first time.</p>
-    <p>Any trouble at all, just reply to this email. 30-day refunds, no questions.</p>`;
+  // Two different emails. A pre-order receipt that links a download would be a
+  // broken promise in the buyer's inbox, and "where is my download" is the most
+  // expensive support mail there is.
+  const body = preorder
+    ? `<p>Thanks for pre-ordering ${product.label}.</p>
+       <p><strong>This is an order confirmation, not a delivery.</strong> The software isn't
+          released yet — that's what you pre-ordered. I'll email the build to this address when
+          it's ready, currently estimated <strong>${eta}</strong>.</p>
+       <p>Your licence key${keys.length > 1 ? "s" : ""}, for your records — you'll need
+          ${keys.length > 1 ? "them" : "it"} when the build arrives:</p>
+       ${rows}
+       <p style="margin-top:24px">Your founding price is locked: every update through 1.0 and the
+          whole 1.x line is included, at what you paid today.</p>
+       <p>If the date moves, you'll hear it from me. And you can have a full refund at any point
+          before delivery — just reply to this email. No form, no questions.</p>`
+    : `<p>Thanks for buying ${product.label}.</p>
+       <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
+       ${rows}
+       <p style="margin-top:24px"><a href="https://yourdomain.com/download">Download your apps</a></p>
+       <p>Any trouble at all, just reply to this email. 30-day refunds, no questions.</p>`;
 
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -206,8 +226,8 @@ async function sendEmail(env, to, product, keys) {
     body: JSON.stringify({
       from: env.FROM_EMAIL,
       to,
-      subject: `Your ${product.label} licence`,
-      html
+      subject: preorder ? `Your ${product.label} pre-order` : `Your ${product.label} licence`,
+      html: body
     })
   });
 

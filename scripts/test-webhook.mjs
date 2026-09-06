@@ -171,6 +171,49 @@ await check("signing-secret rotation: either valid v1 is accepted", async () => 
   return res.status === 200;
 });
 
+console.log("\nPre-order receipts");
+
+await check("pre-order receipt promises no download and states the date", async () => {
+  const h = makeEnv(); h.install();
+  h.env.PREORDER = "true";
+  h.env.DELIVERY_ESTIMATE = "Q2 2027";
+  const body = sessionEvent({ id: "evt_preorder", product: "bundle" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  const { subject, html } = h.sent[0].body;
+  return /pre-order/i.test(subject)
+      && html.includes("Q2 2027")
+      && /order confirmation, not a delivery/i.test(html)
+      && !/\/download/.test(html);            // the broken-promise link must be absent
+});
+
+await check("pre-order receipt still carries both bundle keys", async () => {
+  const h = makeEnv(); h.install();
+  h.env.PREORDER = "true";
+  const body = sessionEvent({ id: "evt_preorder_keys", product: "bundle" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  const html = h.sent[0].body.html;
+  return (html.match(/GP-[A-Z2-9]{4}/) && html.match(/GB-[A-Z2-9]{4}/)) !== null
+      && html.includes(CATALOGUE.progression.label)
+      && html.includes(CATALOGUE.balance.label);
+});
+
+await check("released mode still sends a download link", async () => {
+  const h = makeEnv(); h.install();          // PREORDER unset
+  const body = sessionEvent({ id: "evt_released", product: "progression" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  const { subject, html } = h.sent[0].body;
+  return /licence/i.test(subject) && /\/download/.test(html)
+      && !/order confirmation, not a delivery/i.test(html);
+});
+
+await check("missing DELIVERY_ESTIMATE degrades to a phrase, not 'undefined'", async () => {
+  const h = makeEnv(); h.install();
+  h.env.PREORDER = "true";                    // no DELIVERY_ESTIMATE
+  const body = sessionEvent({ id: "evt_nodate", product: "balance" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  return !/undefined/.test(h.sent[0].body.html);
+});
+
 console.log("\nTest/live separation");
 
 await check("test event is refused on a live-configured endpoint (400)", async () => {
