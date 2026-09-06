@@ -13,7 +13,7 @@ public/           the deployed site — ONLY this directory is uploaded
   main.js         wires config.js into the page
   assets/         favicon, screenshots, og-image
 functions/        Stripe webhook -> licence keys -> email (one key per app)
-scripts/          `npm test` — 22 fulfilment tests, no Stripe account needed
+scripts/          `npm test` (fulfilment tests) and `npm run shots` (screenshots)
 wrangler.jsonc    Pages config: output dir + KV binding
 ```
 
@@ -39,6 +39,27 @@ Signs payloads exactly the way Stripe does and pushes them through the real webh
 covers both apps, the bundle, forged signatures, test/live mix-ups, duplicate deliveries and
 provider outages.
 No Stripe account or network access required. See [STRIPE.md](STRIPE.md) for the live test-mode run.
+
+## Regenerating the screenshots
+
+`public/assets/progression.png` and `balance.png` are **real captures of the real apps**, not
+mockups — driven headlessly with puppeteer-core against your installed Chrome. Each script starts
+the app's Vite dev server view, loads a project through the app's own store action, and captures
+at 1920×1080.
+
+```bash
+npm run dev --prefix ../../GameProgressionApp   # in one terminal, port 1420
+node scripts/shot-progression.mjs               # in another
+
+npm run dev --prefix ../../GameBalanceApp -- --port 1421
+node scripts/shot-balance.mjs
+```
+
+Progression loads `examples/branching-adventure.gpproj` from its own repo. Balance has no example
+file, so the sample project is inlined at the top of `scripts/shot-balance.mjs` — edit it there.
+
+Re-run these whenever the app UI changes, so the sales page never shows a version that no longer
+exists.
 
 ## Going live: the checklist
 

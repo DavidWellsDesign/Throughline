@@ -237,6 +237,12 @@ code{ font-family:var(--mono); font-size:.9em; background:var(--surface-hi);
   color:var(--accent-soft); font-size:1.1rem; margin-bottom:16px;
 }
 .card h3{ font-size:1.06rem; margin-bottom:8px; }
+.tag-planned{
+  display:inline-block; vertical-align:middle; margin-left:8px;
+  font-size:.62rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--text-faint); background:var(--surface-hi);
+  border:1px solid var(--line-hi); border-radius:999px; padding:2px 7px;
+}
 .card p{ color:var(--text-dim); font-size:.94rem; }
 
 /* steps */

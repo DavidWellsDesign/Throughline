@@ -1,6 +1,8 @@
 {
   "version": "0.0.1",
   "configurations": [
-    { "name": "landing", "runtimeExecutable": "python3", "runtimeArgs": ["-m","http.server","8123","--directory","public"], "port": 8123 }
+    { "name": "landing", "runtimeExecutable": "python3", "runtimeArgs": ["-m","http.server","8123","--directory","public"], "port": 8123 },
+    { "name": "progression", "runtimeExecutable": "npm", "runtimeArgs": ["run","dev","--prefix","/Users/davidwells/Projects/GameProgressionApp"], "port": 1420 },
+    { "name": "balance", "runtimeExecutable": "npm", "runtimeArgs": ["run","dev","--prefix","/Users/davidwells/Projects/GameBalanceApp","--","--port","1421"], "port": 1421 }
   ]
 }

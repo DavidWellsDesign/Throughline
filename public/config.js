@@ -21,13 +21,13 @@ window.SITE_CONFIG = {
      software later. This flag drives every "you are pre-ordering" notice on
      the page, the success page and the receipt email.
 
-     ⚠ TODO: `deliveryEstimate` below is a PLACEHOLDER. Set your real estimate
-     before going live — a vague or missing date is the single biggest driver
-     of chargebacks on pre-orders, and main.js will warn until you change it.
+     `deliveryEstimate` is the date promised to buyers. It must stay in step
+     with the DELIVERY_ESTIMATE env var on the deployment AND the three Stripe
+     product descriptions — nothing enforces that, so change all three together.
      Keep it conservative: shipping early delights, shipping late disputes.
   ------------------------------------------------------------------------- */
   preorder: true,
-  deliveryEstimate: "Q2 2027",
+  deliveryEstimate: "Q1 2027",
   DELIVERY_ESTIMATE_PLACEHOLDER: "Q2 2027", // audit compares against this
 
   /* -------------------------------------------------------------------------

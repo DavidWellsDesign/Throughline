@@ -304,7 +304,7 @@ care about there.
       statement is a chargeback waiting to happen
 - [ ] `npm test` passing against the final webhook
 - [ ] `STRIPE_LIVEMODE=true` set on production, `false` on any preview deployment
-- [ ] `deliveryEstimate` in `config.js` is a real date, not the `Q2 2027` placeholder
+- [ ] `deliveryEstimate` in `config.js` is a real date, not a placeholder
 - [ ] `PREORDER=true` and `DELIVERY_ESTIMATE` set on the deployment, matching `config.js`
 - [ ] Live product descriptions carry the `PRE-ORDER — not yet released` prefix and the same date
 - [ ] Terms and Refunds pages written, and they state the pre-order terms
