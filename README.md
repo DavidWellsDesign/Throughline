@@ -111,6 +111,17 @@ Secrets), **encrypted**, never in this repo:
 | `RESEND_API_KEY` | `re_…`, or swap `sendEmail()` for your provider |
 | `FROM_EMAIL` | `Throughline <hello@throughlinetools.com>` |
 
+**Secrets only take effect on deployments created after you set them.** Pages snapshots the
+environment into each deployment, so changing a secret has no effect on what is already running —
+you must redeploy the affected branch:
+
+```bash
+npx wrangler pages deploy --branch preview   # after changing a preview secret
+npx wrangler pages deploy --branch main      # after changing a production secret
+```
+
+Skipping this looks exactly like the secret being wrong, because the old value is still in use.
+
 Set these separately for Production and Preview — that is the point of `STRIPE_LIVEMODE`, and the
 webhook refuses events whose mode doesn't match.
 

@@ -299,6 +299,23 @@ signing secrets. Going live means creating all of it a second time:
 Test-mode data is also disposable — sandboxes can be reset or deleted, so don't keep anything you
 care about there.
 
+## When a webhook fails
+
+The 500 response body names the reason, and Stripe shows it on each delivery attempt
+(Developers → Webhooks → endpoint → the delivery). Common ones:
+
+| Response | Cause | Fix |
+| --- | --- | --- |
+| `400 Invalid signature` | `STRIPE_WEBHOOK_SECRET` doesn't match this endpoint | Re-copy from the endpoint — check you are in the right **account**, since a sandbox and your main account's Test mode are different accounts with different secrets |
+| `400 Livemode mismatch` | `STRIPE_LIVEMODE` disagrees with the event | `true` on production, `false` on preview |
+| `500 … API key is invalid` | Resend key wrong, or revoked | Create a fresh key — Resend shows a key **once**; the list afterwards is masked and not the real value |
+| `500 … 403` from Resend | Domain not verified in Resend | DNS records present is not enough; click Verify |
+| `500 … Unrecognised SKU` | `metadata.product` missing or wrong on the Payment Link | Set it to `progression`, `balance` or `bundle` |
+
+**After changing any secret, redeploy that branch.** Pages bakes the environment into each
+deployment, so an unchanged deployment keeps using the old value — which is indistinguishable from
+the new value being wrong.
+
 ## Go-live checklist
 
 - [ ] `testMode: false` in `config.js`
