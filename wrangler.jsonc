@@ -16,11 +16,25 @@
   "pages_build_output_dir": "public",
 
   // Licence keys, the email -> keys index, and webhook idempotency markers.
+  //
+  // Pages resolves bindings PER ENVIRONMENT and ignores the Workers-style
+  // `preview_id` field — with `preview_id` alone, preview deployments got no
+  // LICENCES binding at all and ran with env.LICENCES undefined, which silently
+  // disables idempotency and licence storage. Both environments must be spelled
+  // out explicitly.
   "kv_namespaces": [
-    {
-      "binding": "LICENCES",
-      "id": "7e3241f188384d40aeb88778926f0a92",
-      "preview_id": "130dc3a324e348a1be3532cd982793fb"
+    { "binding": "LICENCES", "id": "7e3241f188384d40aeb88778926f0a92" }
+  ],
+  "env": {
+    "production": {
+      "kv_namespaces": [
+        { "binding": "LICENCES", "id": "7e3241f188384d40aeb88778926f0a92" }
+      ]
+    },
+    "preview": {
+      "kv_namespaces": [
+        { "binding": "LICENCES", "id": "130dc3a324e348a1be3532cd982793fb" }
+      ]
     }
-  ]
+  }
 }
