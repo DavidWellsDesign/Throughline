@@ -13,7 +13,7 @@ window.SITE_CONFIG = {
      A Stripe TEST payment link looks like  https://buy.stripe.com/test_xxxx
      A LIVE one looks like                  https://buy.stripe.com/xxxx
   ------------------------------------------------------------------------- */
-  testMode: true,
+  testMode: false,
 
   /* -------------------------------------------------------------------------
      PRE-ORDER MODE
