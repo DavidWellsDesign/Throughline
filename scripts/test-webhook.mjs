@@ -18,7 +18,7 @@ function sign(payload, secret = SECRET, t = Math.floor(Date.now() / 1000)) {
   return `t=${t},v1=${mac}`;
 }
 
-function sessionEvent({ id, product, email = "buyer@example.com", status = "paid", amount = 1900, livemode = false }) {
+function sessionEvent({ id, product, tier, email = "buyer@example.com", status = "paid", amount = 1900, livemode = false }) {
   return JSON.stringify({
     id,
     type: "checkout.session.completed",
@@ -30,7 +30,10 @@ function sessionEvent({ id, product, email = "buyer@example.com", status = "paid
         amount_total: amount,
         currency: "usd",
         customer_details: { email },
-        metadata: product ? { product } : {}
+        metadata: {
+          ...(product ? { product } : {}),
+          ...(tier ? { tier } : {})
+        }
       }
     }
   });
@@ -212,6 +215,56 @@ await check("missing DELIVERY_ESTIMATE degrades to a phrase, not 'undefined'", a
   const body = sessionEvent({ id: "evt_nodate", product: "balance" });
   await handleStripeWebhook(post(body, sign(body)), h.env);
   return !/undefined/.test(h.sent[0].body.html);
+});
+
+console.log("\nTiers");
+
+await check("no tier in metadata defaults to standard (the pre-founder links)", async () => {
+  const h = makeEnv(); h.install();
+  const body = sessionEvent({ id: "evt_notier", product: "progression" });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  const stored = JSON.parse(h.kv.get([...h.kv.keys()].find(k => k.startsWith("licence:"))));
+  return res.status === 200 && stored.tier === "standard" &&
+         h.sent[0].body.subject.includes("Standard");
+});
+
+await check("founder tier is recorded on every key and named in the email", async () => {
+  const h = makeEnv(); h.install();
+  const body = sessionEvent({ id: "evt_founder", product: "bundle", tier: "founder", amount: 8900 });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  const licences = [...h.kv.keys()].filter(k => k.startsWith("licence:"))
+                     .map(k => JSON.parse(h.kv.get(k)));
+  return res.status === 200 &&
+         licences.length === 2 && licences.every(l => l.tier === "founder") &&
+         h.sent[0].body.subject.includes("Founder") &&
+         /for life/i.test(h.sent[0].body.html);
+});
+
+await check("standard and founder promise different update entitlements", async () => {
+  const grab = async (tier) => {
+    const h = makeEnv(); h.install();
+    const body = sessionEvent({ id: `evt_ent_${tier}`, product: "balance", tier });
+    await handleStripeWebhook(post(body, sign(body)), h.env);
+    return h.sent[0].body.html;
+  };
+  const std = await grab("standard"), fnd = await grab("founder");
+  return /through 1\.x/.test(std) && !/for life/i.test(std) && /for life/i.test(fnd);
+});
+
+await check("the email index records the tier alongside each key", async () => {
+  const h = makeEnv(); h.install();
+  const body = sessionEvent({ id: "evt_idxtier", product: "bundle", tier: "founder" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  const idx = JSON.parse(h.kv.get("email:buyer@example.com"));
+  return idx.length === 2 && idx.every(e => e.tier === "founder");
+});
+
+await check("an unrecognised tier fails loudly rather than silently downgrading", async () => {
+  const h = makeEnv(); h.install();
+  const body = sessionEvent({ id: "evt_badtier", product: "bundle", tier: "lifetime-typo" });
+  const res = await handleStripeWebhook(post(body, sign(body)), h.env);
+  return res.status === 500 && h.sent.length === 0 &&
+         (await res.text()).includes("lifetime-typo");
 });
 
 console.log("\nTest/live separation");

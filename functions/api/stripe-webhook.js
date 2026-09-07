@@ -39,6 +39,14 @@ const CATALOGUE = {
 /* Licence key prefixes, so a key tells you what it opens at a glance. */
 const KEY_PREFIX = { progression: "GP", balance: "GB" };
 
+/* What each tier entitles the buyer to. `standard` is the default when a
+   Payment Link carries no `tier` in its metadata, which keeps the original
+   links — including ones already used for real purchases — working unchanged. */
+const TIERS = {
+  standard: { label: "Standard",        updates: "every update through 1.x" },
+  founder:  { label: "Founder's Pack",  updates: "every update, for life — including future major versions" }
+};
+
 /* ---------------------------------------------------------------- handler */
 export async function handleStripeWebhook(request, env) {
   if (request.method !== "POST") return new Response("Method not allowed", { status: 405 });
@@ -118,6 +126,13 @@ async function fulfil(session, env) {
   const product = CATALOGUE[sku];
   if (!product) throw new Error(`Unrecognised SKU "${sku}" on session ${session.id}`);
 
+  // Absent tier means standard: the pre-founder links carry no `tier`, and a
+  // buyer must never be silently downgraded by a metadata typo either, so an
+  // unrecognised value is an error rather than a quiet fallback.
+  const tierKey = session.metadata?.tier || "standard";
+  const tier = TIERS[tierKey];
+  if (!tier) throw new Error(`Unrecognised tier "${tierKey}" on session ${session.id}`);
+
   // One key per app, so a bundle buyer can be given Balance-only support later
   // without reissuing the key that unlocks Progression.
   const keys = product.apps.map(app => ({ app, key: makeLicenceKey(KEY_PREFIX[app]) }));
@@ -127,6 +142,7 @@ async function fulfil(session, env) {
       await env.LICENCES.put(`licence:${key}`, JSON.stringify({
         app,
         sku,
+        tier: tierKey,
         email,
         sessionId: session.id,
         amountTotal: session.amount_total,
@@ -137,11 +153,11 @@ async function fulfil(session, env) {
     // Reverse index so support can find a buyer's keys from their email alone.
     await env.LICENCES.put(
       `email:${email.toLowerCase()}`,
-      JSON.stringify(keys.map(k => ({ app: k.app, key: k.key })))
+      JSON.stringify(keys.map(k => ({ app: k.app, key: k.key, tier: tierKey })))
     );
   }
 
-  await sendEmail(env, email, product, keys);
+  await sendEmail(env, email, product, keys, tier);
 }
 
 /* Which SKU was this?
@@ -194,7 +210,7 @@ function makeLicenceKey(prefix = "PF") {
 }
 
 /* ----------------------------------------------------------------- email */
-async function sendEmail(env, to, product, keys) {
+async function sendEmail(env, to, product, keys, tier) {
   const preorder = String(env.PREORDER) === "true";
   const eta = env.DELIVERY_ESTIMATE || "a date I'll confirm shortly";
 
@@ -207,18 +223,19 @@ async function sendEmail(env, to, product, keys) {
   // broken promise in the buyer's inbox, and "where is my download" is the most
   // expensive support mail there is.
   const body = preorder
-    ? `<p>Thanks for pre-ordering ${product.label}.</p>
+    ? `<p>Thanks for pre-ordering ${product.label} — ${tier.label}.</p>
        <p><strong>This is an order confirmation, not a delivery.</strong> The software isn't
           released yet — that's what you pre-ordered. I'll email the build to this address when
           it's ready, currently estimated <strong>${eta}</strong>.</p>
        <p>Your licence key${keys.length > 1 ? "s" : ""}, for your records — you'll need
           ${keys.length > 1 ? "them" : "it"} when the build arrives:</p>
        ${rows}
-       <p style="margin-top:24px">Your founding price is locked: every update through 1.0 and the
-          whole 1.x line is included, at what you paid today.</p>
+       <p style="margin-top:24px">Your price is locked at what you paid today, and your licence
+          covers <strong>${tier.updates}</strong>.</p>
        <p>If the date moves, you'll hear it from me. And you can have a full refund at any point
           before delivery — just reply to this email. No form, no questions.</p>`
-    : `<p>Thanks for buying ${product.label}.</p>
+    : `<p>Thanks for buying ${product.label} — ${tier.label}.</p>
+       <p>Your licence covers <strong>${tier.updates}</strong>.</p>
        <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
        ${rows}
        <p style="margin-top:24px"><a href="https://throughlinetools.com/download">Download your apps</a></p>
@@ -233,7 +250,9 @@ async function sendEmail(env, to, product, keys) {
     body: JSON.stringify({
       from: env.FROM_EMAIL,
       to,
-      subject: preorder ? `Your ${product.label} pre-order` : `Your ${product.label} licence`,
+      subject: preorder
+        ? `Your ${product.label} pre-order (${tier.label})`
+        : `Your ${product.label} licence (${tier.label})`,
       html: body
     })
   });

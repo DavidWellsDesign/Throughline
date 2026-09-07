@@ -17,6 +17,36 @@ liveCheckout: { /* live links   */ }
 `main.js` logs an error if a test link is ever in use with `testMode: false`, and a warning the
 other way round.
 
+### Tiers
+
+Each product sells at two prices. The webhook reads **`metadata.tier`** off the Payment Link:
+
+| `tier` | Meaning | Price (single / bundle) |
+| --- | --- | --- |
+| absent or `standard` | 1.0 plus the 1.x line | $19 / $29 |
+| `founder` | Updates for life, incl. major versions | $49 / $89 |
+
+Absent means standard, so the original links keep working untouched. An **unrecognised** value is
+an error rather than a silent downgrade — a typo in `tier` must never quietly sell someone a
+lesser licence than they paid for.
+
+### ⚠ Live founder links still to create
+
+The $49/$49/$89 prices exist in live, but **no Payment Links point at them**, so `liveCheckout`
+has three empty slots and the site hides the tier switch entirely until they're filled.
+
+In the live dashboard, create a Payment Link for each of these prices:
+
+| Product | Price id | Metadata to set |
+| --- | --- | --- |
+| Throughline Progression | `price_1UCvXRHUl30CqJhaEdepJ6Eu` | `product=progression`, `tier=founder` |
+| Throughline Balance | `price_1UCvVdHUl30CqJha77SfkUMG` | `product=balance`, `tier=founder` |
+| Progression + Balance | `price_1UCvXyHUl30CqJha422fLzZv` | `product=bundle`, `tier=founder` |
+
+Set the same redirect as the others, allow promotion codes, then paste the three URLs into
+`liveCheckout` in `public/config.js` and redeploy. **Both metadata keys are required** — without
+`tier` the buyer pays $49 and receives a standard licence.
+
 ### Live IDs (account `acct_1UC9DuHUl30CqJha`)
 
 | SKU | Product | Price | Payment Link |

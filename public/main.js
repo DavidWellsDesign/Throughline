@@ -67,7 +67,8 @@
         "of chargebacks."
       );
     }
-    ["progression", "balance", "bundle"].forEach(function (key) {
+    ["progression", "balance", "bundle",
+     "progression_founder", "balance_founder", "bundle_founder"].forEach(function (key) {
       var url = activeLinks[key];
       if (!url) {
         console.warn("[config] No " + (cfg.testMode ? "test" : "LIVE") + " checkout link for '" + key +
@@ -83,6 +84,58 @@
                      "takes real money.");
       }
     });
+  })();
+
+  /* ---------- 4b. Licence tier switch --------------------------------------
+     Swaps which variant block is visible in every pricing card at once. The
+     buy buttons inside each variant already carry the right data-buy key, so
+     nothing here rewrites hrefs.                                            */
+  (function tierSwitch() {
+    var buttons = document.querySelectorAll("[data-tier-btn]");
+    if (!buttons.length) return;
+
+    // Don't offer a tier that can't be bought. If the founder links aren't
+    // configured for the active mode, hide the switch entirely and leave the
+    // standard variants showing — better a smaller page than a button that
+    // silently drops someone into an email client. Deleting the switch also
+    // means production is safe to deploy before the live links exist; the
+    // tier appears on its own once they're pasted in.
+    var founderReady = ["progression_founder", "balance_founder", "bundle_founder"]
+      .every(function (k) { return !!activeLinks[k]; });
+    if (!founderReady) {
+      console.warn("[config] Founder links missing for " +
+                   (cfg.testMode ? "test" : "LIVE") + " mode — hiding the tier switch.");
+      document.querySelectorAll(".tierswitch, [data-tier-note]").forEach(function (el) {
+        el.remove();
+      });
+      document.querySelectorAll('[data-variant="founder"]').forEach(function (el) {
+        el.remove();
+      });
+      return;
+    }
+
+    function show(tier) {
+      document.querySelectorAll("[data-variant]").forEach(function (el) {
+        el.hidden = el.getAttribute("data-variant") !== tier;
+      });
+      document.querySelectorAll("[data-tier-note]").forEach(function (el) {
+        el.hidden = el.getAttribute("data-tier-note") !== tier;
+      });
+      buttons.forEach(function (b) {
+        var on = b.getAttribute("data-tier-btn") === tier;
+        b.classList.toggle("is-on", on);
+        b.setAttribute("aria-pressed", String(on));
+      });
+      try { localStorage.setItem("tl.tier", tier); } catch (e) { /* private mode */ }
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener("click", function () { show(b.getAttribute("data-tier-btn")); });
+    });
+
+    var saved = null;
+    try { saved = localStorage.getItem("tl.tier"); } catch (e) { /* ignore */ }
+    if (saved === "founder") show("founder");
   })();
 
   /* ---------- 5. Social links --------------------------------------------- */

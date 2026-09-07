@@ -339,48 +339,109 @@
       One-time purchase, no subscription. Prices in USD, tax added at checkout where required.
     </p>
 
+    <div class="tierswitch" role="group" aria-label="Choose a licence tier">
+      <button type="button" class="tierswitch__btn is-on" data-tier-btn="standard" aria-pressed="true">
+        Standard
+      </button>
+      <button type="button" class="tierswitch__btn" data-tier-btn="founder" aria-pressed="false">
+        Founder's Pack
+      </button>
+    </div>
+    <p class="tierswitch__note" data-tier-note="standard">
+      The 1.0 release and every update across the 1.x line.
+    </p>
+    <p class="tierswitch__note" data-tier-note="founder" hidden>
+      Everything in Standard, plus updates for life — including future major versions — and a
+      direct contribution to getting these built.
+    </p>
+
     <div class="grid grid--3 tiers">
       <div class="tier">
         <h3 class="tier__name">Throughline Progression</h3>
-        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="progression">19</span></p>
-        <p class="tier__meta">One-time · pre-order</p>
-        <p class="tier__rise">Goes to <span data-future="progression">$39</span> at 1.0</p>
-        <ul class="tier__list">
+        <div class="tier__variant" data-variant="standard">
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="progression">19</span></p>
+          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__rise">Goes to <span data-future="progression">$39</span> at 1.0</p>
+          <ul class="tier__list">
           <li>Branching stage graph</li>
           <li>Pacing timeline &amp; five rules</li>
           <li>Example project included</li>
-          <li>Updates through 1.x</li>
-        </ul>
-        <a class="btn btn--ghost btn--block" data-buy="progression">Pre-order Progression</a>
+            <li>Every update through 1.x</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" data-buy="progression">Pre-order Progression</a>
+        </div>
+
+        <div class="tier__variant" data-variant="founder" hidden>
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="progression_founder">49</span></p>
+          <p class="tier__meta">One-time · founding supporter</p>
+          <ul class="tier__list">
+          <li>Branching stage graph</li>
+          <li>Pacing timeline &amp; five rules</li>
+          <li>Example project included</li>
+            <li><span><strong>Updates for life</strong>, including future major versions</span></li>
+            <li>Directly funds the work</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" data-buy="progression_founder">Get the Founder's Pack</a>
+        </div>
       </div>
 
       <div class="tier tier--featured">
         <p class="tier__badge">Best value</p>
         <h3 class="tier__name">Both apps</h3>
-        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="bundle">29</span></p>
-        <p class="tier__meta">One-time · pre-order</p>
-        <p class="tier__rise">Goes to <span data-future="bundle">$59</span> at 1.0</p>
-        <ul class="tier__list">
+        <div class="tier__variant" data-variant="standard">
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="bundle">19</span></p>
+          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__rise">Goes to <span data-future="bundle">$59</span> at 1.0</p>
+          <ul class="tier__list">
           <li>Everything in both apps</li>
           <li>Plan the flow, then tune the numbers</li>
-          <li>Updates through 1.x for both</li>
           <li>A licence key for each app</li>
-        </ul>
-        <a class="btn btn--primary btn--block" data-buy="bundle">Pre-order the bundle</a>
+            <li>Every update through 1.x</li>
+          </ul>
+          <a class="btn btn--primary btn--block" data-buy="bundle">Pre-order the bundle</a>
+        </div>
+
+        <div class="tier__variant" data-variant="founder" hidden>
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="bundle_founder">49</span></p>
+          <p class="tier__meta">One-time · founding supporter</p>
+          <ul class="tier__list">
+          <li>Everything in both apps</li>
+          <li>Plan the flow, then tune the numbers</li>
+          <li>A licence key for each app</li>
+            <li><span><strong>Updates for life</strong>, including future major versions</span></li>
+            <li>Directly funds the work</li>
+          </ul>
+          <a class="btn btn--primary btn--block" data-buy="bundle_founder">Get the Founder's Pack</a>
+        </div>
       </div>
 
       <div class="tier">
         <h3 class="tier__name">Throughline Balance</h3>
-        <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="balance">19</span></p>
-        <p class="tier__meta">One-time · pre-order</p>
-        <p class="tier__rise">Goes to <span data-future="balance">$39</span> at 1.0</p>
-        <ul class="tier__list">
+        <div class="tier__variant" data-variant="standard">
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="balance">19</span></p>
+          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__rise">Goes to <span data-future="balance">$39</span> at 1.0</p>
+          <ul class="tier__list">
           <li>Formula &amp; points curves</li>
           <li>Parameter sliders, live preview</li>
           <li>Multi-stat comparisons</li>
-          <li>Updates through 1.x</li>
-        </ul>
-        <a class="btn btn--ghost btn--block" data-buy="balance">Pre-order Balance</a>
+            <li>Every update through 1.x</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" data-buy="balance">Pre-order Balance</a>
+        </div>
+
+        <div class="tier__variant" data-variant="founder" hidden>
+          <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="balance_founder">49</span></p>
+          <p class="tier__meta">One-time · founding supporter</p>
+          <ul class="tier__list">
+          <li>Formula &amp; points curves</li>
+          <li>Parameter sliders, live preview</li>
+          <li>Multi-stat comparisons</li>
+            <li><span><strong>Updates for life</strong>, including future major versions</span></li>
+            <li>Directly funds the work</li>
+          </ul>
+          <a class="btn btn--ghost btn--block" data-buy="balance_founder">Get the Founder's Pack</a>
+        </div>
       </div>
     </div>
 

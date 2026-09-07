@@ -290,6 +290,31 @@ code{ font-family:var(--mono); font-size:.9em; background:var(--surface-hi);
 }
 .guarantee strong{ color:var(--text); }
 
+/* ------------------------------ tier switch ------------------------------ */
+.tierswitch{
+  display:inline-flex; gap:4px; margin-top:30px; padding:4px;
+  background:var(--surface); border:1px solid var(--line); border-radius:999px;
+}
+.tierswitch__btn{
+  font:inherit; font-size:.9rem; font-weight:600; color:var(--text-dim);
+  background:transparent; border:0; cursor:pointer;
+  padding:.6em 1.3em; border-radius:999px;
+  transition:background .18s ease, color .18s ease;
+}
+.tierswitch__btn:hover{ color:var(--text); }
+.tierswitch__btn.is-on{
+  background:linear-gradient(180deg, var(--accent-soft), var(--accent));
+  color:#fff; box-shadow:0 4px 16px -6px var(--accent-glow);
+}
+.tierswitch__note{
+  margin-top:14px; color:var(--text-dim); font-size:.93rem; max-width:56ch;
+}
+
+/* Both variants sit in the DOM; JS shows one. Keeping them as real markup
+   rather than building strings means the copy stays editable in place. */
+.tier__variant{ display:flex; flex-direction:column; flex:1; }
+.tier__variant[hidden]{ display:none !important; }
+
 /* ----------------------------- testimonials ----------------------------- */
 .quote{
   margin:0; background:var(--surface); border:1px solid var(--line);

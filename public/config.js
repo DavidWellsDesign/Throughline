@@ -37,10 +37,14 @@ window.SITE_CONFIG = {
      See STRIPE.md for how to create these.
   ------------------------------------------------------------------------- */
   // Sandbox links — used while testMode is true. No real money moves.
+  // Keys are "<product>" for standard and "<product>_founder" for the pack.
   checkout: {
     progression: "https://buy.stripe.com/test_eVq9AVa510KefFV3fc4Rq00",
     balance:     "https://buy.stripe.com/test_14AdRbelhfF851h2b84Rq01",
-    bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02"
+    bundle:      "https://buy.stripe.com/test_5kQ14pgtp3WqgJZdTQ4Rq02",
+    progression_founder: "https://buy.stripe.com/test_14A6oJ4KH50u2T96ro4Rq03",
+    balance_founder:     "https://buy.stripe.com/test_6oU14p6SPakO9hx9DA4Rq04",
+    bundle_founder:      "https://buy.stripe.com/test_6oUeVf4KH0KefFVg1Y4Rq05"
   },
 
   // Live links — used the moment testMode flips to false. These take REAL
@@ -50,7 +54,13 @@ window.SITE_CONFIG = {
   liveCheckout: {
     progression: "https://buy.stripe.com/4gMdR9dK0bRX68nbJNbsc02",
     balance:     "https://buy.stripe.com/eVq6oHeO47BHfIXeVZbsc00",
-    bundle:      "https://buy.stripe.com/9B63cv6hycW154jdRVbsc01"
+    bundle:      "https://buy.stripe.com/9B63cv6hycW154jdRVbsc01",
+    // ⚠ TODO: create these three in the LIVE dashboard against the $49/$49/$89
+    // prices, with metadata product=<sku> AND tier=founder, then paste here.
+    // Until then the founder buttons fall back to contactUrl. See STRIPE.md.
+    progression_founder: "",
+    balance_founder:     "",
+    bundle_founder:      ""
   },
 
   // Prices shown on the page. Keep these in step with the Stripe products —
@@ -58,7 +68,10 @@ window.SITE_CONFIG = {
   prices: {
     progression: "$19",
     balance: "$19",
-    bundle: "$29"
+    bundle: "$29",
+    progression_founder: "$49",
+    balance_founder: "$49",
+    bundle_founder: "$89"
   },
 
   // The published 1.0 price. Shown on the page as the "goes up to" figure —
