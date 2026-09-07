@@ -30,22 +30,20 @@ Absent means standard, so the original links keep working untouched. An **unreco
 an error rather than a silent downgrade — a typo in `tier` must never quietly sell someone a
 lesser licence than they paid for.
 
-### ⚠ Live founder links still to create
+### Live founder links
 
-The $49/$49/$89 prices exist in live, but **no Payment Links point at them**, so `liveCheckout`
-has three empty slots and the site hides the tier switch entirely until they're filled.
+Created and wired into `liveCheckout`. Verified: each points at the Premium price, and both
+metadata keys are set.
 
-In the live dashboard, create a Payment Link for each of these prices:
+| SKU | Payment Link | Price | Amount |
+| --- | --- | --- | --- |
+| `progression_founder` | `plink_1UCwXzHUl30CqJha0oLB1WVJ` | `price_1UCvXRHUl30CqJhaEdepJ6Eu` | $49 |
+| `balance_founder` | `plink_1UCwZ5HUl30CqJhaEopOh8TU` | `price_1UCvVdHUl30CqJha77SfkUMG` | $49 |
+| `bundle_founder` | `plink_1UCwVBHUl30CqJhaKBgrLbPJ` | `price_1UCvXyHUl30CqJha422fLzZv` | $89 |
 
-| Product | Price id | Metadata to set |
-| --- | --- | --- |
-| Throughline Progression | `price_1UCvXRHUl30CqJhaEdepJ6Eu` | `product=progression`, `tier=founder` |
-| Throughline Balance | `price_1UCvVdHUl30CqJha77SfkUMG` | `product=balance`, `tier=founder` |
-| Progression + Balance | `price_1UCvXyHUl30CqJha422fLzZv` | `product=bundle`, `tier=founder` |
-
-Set the same redirect as the others, allow promotion codes, then paste the three URLs into
-`liveCheckout` in `public/config.js` and redeploy. **Both metadata keys are required** — without
-`tier` the buyer pays $49 and receives a standard licence.
+Note: you never type a price id in the dashboard. Creating a Payment Link asks you to pick a
+product, and when a product has more than one price it offers a dropdown — that is where the
+price is chosen.
 
 ### Live IDs (account `acct_1UC9DuHUl30CqJha`)
 

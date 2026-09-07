@@ -55,12 +55,9 @@ window.SITE_CONFIG = {
     progression: "https://buy.stripe.com/4gMdR9dK0bRX68nbJNbsc02",
     balance:     "https://buy.stripe.com/eVq6oHeO47BHfIXeVZbsc00",
     bundle:      "https://buy.stripe.com/9B63cv6hycW154jdRVbsc01",
-    // ⚠ TODO: create these three in the LIVE dashboard against the $49/$49/$89
-    // prices, with metadata product=<sku> AND tier=founder, then paste here.
-    // Until then the founder buttons fall back to contactUrl. See STRIPE.md.
-    progression_founder: "",
-    balance_founder:     "",
-    bundle_founder:      ""
+    progression_founder: "https://buy.stripe.com/bJecN58pG6xD1S7eVZbsc04",
+    balance_founder:     "https://buy.stripe.com/9B614n0Xef4940fdRVbsc05",
+    bundle_founder:      "https://buy.stripe.com/7sY6oH21i2hnaoD3dhbsc03"
   },
 
   // Prices shown on the page. Keep these in step with the Stripe products —
