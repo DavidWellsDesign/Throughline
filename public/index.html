@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Throughline — Desktop tools for designing the shape of a game</title>
-<meta name="description" content="Pre-order two desktop tools for game designers. Throughline Progression maps your campaign as a node graph and flags where pacing sags; Throughline Balance turns XP and damage formulas into curves you can see. In development — delivery estimated Q1 2027.">
+<meta name="description" content="Pre-order two desktop tools for game designers. Throughline Progression maps your campaign as a node graph and flags where pacing sags; Throughline Balance turns XP and damage formulas into curves you can see. macOS now, Windows to follow — delivery estimated Q1 2027.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Throughline — Desktop tools for designing the shape of a game">
@@ -63,7 +63,7 @@
 <section class="hero" id="top">
   <div class="hero__glow" aria-hidden="true"></div>
   <div class="wrap hero__inner">
-    <p class="eyebrow"><span class="dot"></span> Pre-order · in development · delivery <span data-delivery>Q1 2027</span></p>
+    <p class="eyebrow"><span class="dot"></span> Pre-order · macOS now, Windows to follow · delivery <span data-delivery>Q1 2027</span></p>
     <h1 class="hero__title">Design the shape of your game <br class="br-lg">before you build it</h1>
     <p class="hero__sub">
       Two desktop tools for the parts of design that live in a spreadsheet until they break.
@@ -74,7 +74,7 @@
       <a class="btn btn--primary btn--lg" href="#pricing">See pricing</a>
       <a class="btn btn--ghost btn--lg" href="#progression">What they do</a>
     </div>
-    <p class="hero__note">Native desktop apps for macOS &amp; Windows · Plain-text project files · No account, no cloud</p>
+    <p class="hero__note">Native macOS app · Windows coming · Plain-text project files · No account, no cloud</p>
 
     <p class="preorder-flag">
       <strong>These apps aren’t finished yet.</strong> You’re pre-ordering: you pay today at the
@@ -304,7 +304,7 @@
         <ul>
           <li>Progression: graph editing, per-stage detail, auto-layout, all five pacing rules, open/save</li>
           <li>Balance: formula parsing and evaluation, points editing, parameter sliders, live curve preview, open/save</li>
-          <li>Native macOS and Windows builds run locally</li>
+          <li>Native macOS build (Apple Silicon and Intel), running locally</li>
         </ul>
       </div>
       <div class="status__col">
@@ -313,6 +313,7 @@
           <li>Undo/redo</li>
           <li>Exporting curves and tables to CSV/JSON for your engine</li>
           <li>Balance: plotting a comparison set as multiple curves at once</li>
+          <li>A Windows build — needs a Windows machine or CI, which isn't set up</li>
           <li>Code signing, so the apps open without a security warning</li>
           <li>Packaging and delivery — the part that turns this into something you can install</li>
           <li>Simulation in Balance, beyond static curves</li>
@@ -488,14 +489,20 @@
       </details>
       <details>
         <summary>What platforms?</summary>
-        <p>macOS and Windows, as native desktop apps built on Tauri. There's no web version and
-           no Linux build yet — if you need Linux, say so and it moves up the list.</p>
+        <p><strong>macOS today</strong> — a native app built on Tauri, universal so it runs on
+           both Apple Silicon and Intel.</p>
+        <p><strong>Windows is coming but is not here yet.</strong> Tauri can't build a Windows
+           installer from a Mac, so it needs a Windows machine or a CI runner, and that isn't set
+           up. I'd rather say that plainly than list Windows and leave you guessing. If you're on
+           Windows, your licence covers it the moment it ships at no extra cost — but buy with
+           your eyes open, and the refund stays available the whole time.</p>
+        <p>No web version, and no Linux build yet — if you need Linux, say so and it moves up
+           the list.</p>
       </details>
       <details>
         <summary>What will I see on first launch?</summary>
         <p>Right now the builds aren't code-signed, so macOS Gatekeeper will warn you and
-           Windows SmartScreen may too. You'll need to right-click → Open the first time on
-           macOS. Signing is on the list above and this answer will change; until it does, it's
+           you'll need to right-click → Open the first time. Signing is on the list above and this answer will change; until it does, it's
            better that you hear it here than at the download.</p>
       </details>
       <details>
