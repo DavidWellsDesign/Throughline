@@ -83,6 +83,15 @@ await check("downloads are counted without blocking anyone", async () => {
   return rec.downloads === 2 && !!rec.lastDownloadAt;
 });
 
+await check("HEAD validates but does not count as a download", async () => {
+  const { env, kv } = makeEnv({ licences: { "licence:GP-AAAA-BBBB-CCCC": LICENCE },
+                                releases: { progression: RELEASE },
+                                objects: { "progression/tp-0.1.0.dmg": "X" } });
+  await get("?key=GP-AAAA-BBBB-CCCC", env, "HEAD");   // the page's probe
+  await get("?key=GP-AAAA-BBBB-CCCC", env);           // the actual download
+  return JSON.parse(kv.get("licence:GP-AAAA-BBBB-CCCC")).downloads === 1;
+});
+
 await check("HEAD validates without sending the body", async () => {
   const { env } = makeEnv({ licences: { "licence:GP-AAAA-BBBB-CCCC": LICENCE },
                             releases: { progression: RELEASE },

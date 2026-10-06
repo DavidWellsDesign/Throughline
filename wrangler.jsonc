@@ -22,6 +22,13 @@
   // LICENCES binding at all and ran with env.LICENCES undefined, which silently
   // disables idempotency and licence storage. Both environments must be spelled
   // out explicitly.
+  // Build artifacts served by /api/download, gated on a valid licence key.
+  // Same bucket in both environments: the builds are identical, and only the
+  // LICENCES namespace differs between preview and production.
+  "r2_buckets": [
+    { "binding": "RELEASES", "bucket_name": "throughline-releases" }
+  ],
+
   "kv_namespaces": [
     { "binding": "LICENCES", "id": "7e3241f188384d40aeb88778926f0a92" }
   ],
@@ -29,11 +36,17 @@
     "production": {
       "kv_namespaces": [
         { "binding": "LICENCES", "id": "7e3241f188384d40aeb88778926f0a92" }
+      ],
+      "r2_buckets": [
+        { "binding": "RELEASES", "bucket_name": "throughline-releases" }
       ]
     },
     "preview": {
       "kv_namespaces": [
         { "binding": "LICENCES", "id": "130dc3a324e348a1be3532cd982793fb" }
+      ],
+      "r2_buckets": [
+        { "binding": "RELEASES", "bucket_name": "throughline-releases" }
       ]
     }
   }

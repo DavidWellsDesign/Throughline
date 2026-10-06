@@ -64,9 +64,11 @@ export async function handleDownload(request, env) {
     return problem(503, "That build is temporarily unavailable. Please try again shortly.");
   }
 
-  // Count downloads so key-sharing is visible without blocking anyone. Never
+  // Count downloads so key-sharing is visible without blocking anyone. Only on
+  // GET: the download page probes with HEAD first, and counting both would
+  // double every figure and make the number useless for spotting abuse. Never
   // let bookkeeping fail the download itself.
-  try {
+  if (request.method === "GET") try {
     await env.LICENCES.put(`licence:${key}`, JSON.stringify({
       ...licence,
       downloads: (licence.downloads || 0) + 1,

@@ -68,22 +68,13 @@ in the buyer's inbox, and tied to exactly one app, so a bundle buyer's two keys 
 builds with no extra state. The released-mode receipt deep-links each key, so nobody has to paste
 anything.
 
-### One-time setup
+Bucket `throughline-releases` exists and is bound as `RELEASES` in both environments. Verified
+live: a real licence key returns the right build, byte-for-byte identical to the local DMG.
 
-R2 has to be switched on in the Cloudflare dashboard first (R2 → it asks you to accept the terms).
-Wrangler can't do it. Then:
-
-```bash
-npx wrangler r2 bucket create throughline-releases
-```
-
-Add the binding to [`wrangler.jsonc`](wrangler.jsonc), in **both** `env` blocks alongside the KV one:
-
-```jsonc
-"r2_buckets": [
-  { "binding": "RELEASES", "bucket_name": "throughline-releases" }
-]
-```
+**After changing a binding you must deploy twice.** The first deploy pushes the binding to the
+project; the deployment it creates was built before the binding existed, so it still runs without
+it. The second picks it up. Identical trap to the secrets, and it looks exactly like a broken
+binding.
 
 ### Each release
 
