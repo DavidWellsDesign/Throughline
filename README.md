@@ -61,6 +61,33 @@ file, so the sample project is inlined at the top of `scripts/shot-balance.mjs` 
 Re-run these whenever the app UI changes, so the sales page never shows a version that no longer
 exists.
 
+## Switching from pre-order to released
+
+Two values, and they must change together:
+
+| Where | Value |
+| --- | --- |
+| `preorder` in `public/config.js` | `false` — drives the page copy |
+| `PREORDER` secret on the deployment | `false` — drives the receipt email |
+
+```bash
+npx wrangler pages secret put PREORDER --project-name throughline-site
+npx wrangler pages deploy --branch main
+```
+
+Both copies of every differing phrase live in the HTML marked `data-when="preorder"` or
+`data-when="released"`; `main.js` removes the set that doesn't apply. Removing rather than hiding
+means a JS failure can't leave both on screen. Verified in both directions — in released mode the
+word "pre-order" does not survive anywhere in the rendered page.
+
+**They can diverge, and nothing catches it automatically.** The page reads `config.js`, the email
+reads the deployment secret. If they disagree a buyer sees "available now" and then receives
+"nothing to download yet". `main.js` logs the mode it rendered in; check it against
+`wrangler pages secret list`.
+
+Do not flip either until there is actually something to download — the released copy promises a
+download link in the receipt.
+
 ## Going live: the checklist
 
 1. **`config.js`** — paste your checkout URL(s) from your payment provider. See

@@ -86,6 +86,26 @@
     });
   })();
 
+  /* ---------- 4a. Pre-order vs released copy -------------------------------
+     Both versions of every differing phrase sit in the HTML; this removes the
+     one that doesn't apply. Removing rather than hiding means a JS failure
+     can't leave both visible, and `config.preorder` must stay in step with the
+     PREORDER env var on the deployment — the page and the receipt email
+     disagreeing is the one failure a buyer would actually notice.            */
+  (function releaseMode() {
+    var mode = cfg.preorder === false ? "released" : "preorder";
+    document.querySelectorAll("[data-when]").forEach(function (el) {
+      if (el.getAttribute("data-when") !== mode) el.remove();
+    });
+    document.documentElement.setAttribute("data-mode", mode);
+
+    // Surfaced for a quick eyeball against `wrangler pages secret list`; the
+    // page can't read the deployment's PREORDER value to check it directly.
+    console.info("[config] page copy is in " + mode.toUpperCase() +
+                 " mode — confirm the PREORDER secret matches, or the receipt " +
+                 "email will contradict the page.");
+  })();
+
   /* ---------- 4b. Licence tier switch --------------------------------------
      Swaps which variant block is visible in every pricing card at once. The
      buy buttons inside each variant already carry the right data-buy key, so

@@ -26,6 +26,11 @@ window.SITE_CONFIG = {
      product descriptions — nothing enforces that, so change all three together.
      Keep it conservative: shipping early delights, shipping late disputes.
   ------------------------------------------------------------------------- */
+  // ⚠ Must match the PREORDER secret on the Cloudflare deployment. This drives
+  // the page copy; PREORDER drives the receipt email. If they disagree, a buyer
+  // sees "available now" and then receives "nothing to download yet", or worse
+  // the reverse. Change both, then redeploy — secrets only take effect on a
+  // new deployment.
   preorder: true,
   deliveryEstimate: "Q1 2027",
   DELIVERY_ESTIMATE_PLACEHOLDER: "Q2 2027", // audit compares against this

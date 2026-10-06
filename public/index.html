@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Throughline — Desktop tools for designing the shape of a game</title>
-<meta name="description" content="Pre-order two desktop tools for game designers. Throughline Progression maps your campaign as a node graph and flags where pacing sags; Throughline Balance turns XP and damage formulas into curves you can see. macOS now, Windows to follow — delivery estimated Q1 2027.">
+<meta name="description" content="Two desktop tools for game designers. Throughline Progression maps your campaign as a node graph and flags where pacing sags; Throughline Balance turns XP and damage formulas into curves you can see. Native macOS app, Windows to follow.">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Throughline — Desktop tools for designing the shape of a game">
-<meta property="og:description" content="Pre-order: plan progression as a graph, tune balance as curves. Two native desktop tools, in development, delivery estimated Q1 2027.">
+<meta property="og:description" content="Plan progression as a graph, tune balance as curves. Two native desktop tools for game designers. macOS now, Windows to follow.">
 <meta property="og:image" content="assets/og-image.png">
 <meta property="og:url" content="https://throughlinetools.com">
 <meta name="twitter:card" content="summary_large_image">
@@ -41,7 +41,7 @@
       <a href="#faq">FAQ</a>
     </nav>
     <div class="nav__actions">
-      <a class="btn btn--primary" href="#pricing">Pre-order</a>
+      <a class="btn btn--primary" href="#pricing"><span data-when="preorder">Pre-order</span><span data-when="released">Get the apps</span></a>
     </div>
     <button class="nav__toggle" aria-expanded="false" aria-controls="nav-mobile" aria-label="Menu">
       <span></span><span></span><span></span>
@@ -53,7 +53,7 @@
     <a href="#files">Your files</a>
     <a href="#pricing">Pricing</a>
     <a href="#faq">FAQ</a>
-    <a class="btn btn--primary" href="#pricing">Pre-order</a>
+    <a class="btn btn--primary" href="#pricing"><span data-when="preorder">Pre-order</span><span data-when="released">Get the apps</span></a>
   </div>
 </header>
 
@@ -63,7 +63,10 @@
 <section class="hero" id="top">
   <div class="hero__glow" aria-hidden="true"></div>
   <div class="wrap hero__inner">
-    <p class="eyebrow"><span class="dot"></span> Pre-order · macOS now, Windows to follow · delivery <span data-delivery>Q1 2027</span></p>
+    <p class="eyebrow"><span class="dot"></span>
+      <span data-when="preorder">Pre-order · macOS now, Windows to follow · delivery <span data-delivery>Q1 2027</span></span>
+      <span data-when="released">Early access · available now for macOS · Windows to follow</span>
+    </p>
     <h1 class="hero__title">Design the shape of your game <br class="br-lg">before you build it</h1>
     <p class="hero__sub">
       Two desktop tools for the parts of design that live in a spreadsheet until they break.
@@ -76,11 +79,16 @@
     </div>
     <p class="hero__note">Native macOS app · Windows coming · Plain-text project files · No account, no cloud</p>
 
-    <p class="preorder-flag">
+    <p class="preorder-flag" data-when="preorder">
       <strong>These apps aren’t finished yet.</strong> You’re pre-ordering: you pay today at the
-      founding price, and the software reaches you when it’s ready — currently estimated
+      founding price, and the software is delivered when it’s ready — currently estimated
       <span data-delivery>Q1 2027</span>. There is nothing to download right now.
       Full refund any time before delivery, for any reason.
+    </p>
+    <p class="preorder-flag preorder-flag--live" data-when="released">
+      <strong>Early access, available now.</strong> These are working apps, not finished ones —
+      you get the macOS build the moment you buy, plus every update as they grow. The roadmap
+      below is honest about what isn’t there yet. 30-day refund if it isn’t what you needed.
     </p>
 
     <ul class="duo">
@@ -173,7 +181,7 @@
     </ul>
 
     <p class="inline-cta">
-      <a class="btn btn--primary" data-buy="progression">Pre-order Progression — <span data-price="progression">$19</span></a>
+      <a class="btn btn--primary" data-buy="progression"><span data-when="preorder">Pre-order</span><span data-when="released">Get</span> Progression — <span data-price="progression">$19</span></a>
       <span class="inline-cta__note">Will ship with a twelve-stage example project that has two deliberate pacing problems in it.</span>
     </p>
   </div>
@@ -247,7 +255,7 @@
     </ul>
 
     <p class="inline-cta">
-      <a class="btn btn--primary" data-buy="balance">Pre-order Balance — <span data-price="balance">$19</span></a>
+      <a class="btn btn--primary" data-buy="balance"><span data-when="preorder">Pre-order</span><span data-when="released">Get</span> Balance — <span data-price="balance">$19</span></a>
       <span class="inline-cta__note">Uses the number-only math.js build — same expressions you'd write in a spreadsheet.</span>
     </p>
   </div>
@@ -300,7 +308,10 @@
 
     <div class="status">
       <div class="status__col">
-        <h3><span class="status__dot status__dot--on"></span> Built and working (not yet released)</h3>
+        <h3><span class="status__dot status__dot--on"></span>
+          <span data-when="preorder">Built and working (not yet released)</span>
+          <span data-when="released">In this release</span>
+        </h3>
         <ul>
           <li>Progression: graph editing, per-stage detail, auto-layout, all five pacing rules, open/save</li>
           <li>Balance: formula parsing and evaluation, points editing, parameter sliders, live curve preview, open/save</li>
@@ -308,7 +319,10 @@
         </ul>
       </div>
       <div class="status__col">
-        <h3><span class="status__dot"></span> Still to do before delivery</h3>
+        <h3><span class="status__dot"></span>
+          <span data-when="preorder">Still to do before delivery</span>
+          <span data-when="released">Not there yet</span>
+        </h3>
         <ul>
           <li>Undo/redo</li>
           <li>Exporting curves and tables to CSV/JSON for your engine</li>
@@ -321,7 +335,7 @@
       </div>
     </div>
 
-    <p class="guarantee">
+    <p class="guarantee" data-when="preorder">
       <strong>Founding price, locked.</strong> You pay today's price once and keep every update
       through 1.0 and the whole 1.x line. Prices rise to $39 each and $59 for the bundle at
       release; yours doesn't. If the date slips you'll hear it from me before you read it
@@ -361,7 +375,7 @@
         <h3 class="tier__name">Throughline Progression</h3>
         <div class="tier__variant" data-variant="standard">
           <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="progression">19</span></p>
-          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__meta">One-time · <span data-when="preorder">pre-order</span><span data-when="released">early access</span></p>
           <p class="tier__rise">Goes to <span data-future="progression">$39</span> at 1.0</p>
           <ul class="tier__list">
           <li>Branching stage graph</li>
@@ -369,7 +383,7 @@
           <li>Example project included</li>
             <li>Every update through 1.x</li>
           </ul>
-          <a class="btn btn--ghost btn--block" data-buy="progression">Pre-order Progression</a>
+          <a class="btn btn--ghost btn--block" data-buy="progression"><span data-when="preorder">Pre-order</span><span data-when="released">Get</span> Progression</a>
         </div>
 
         <div class="tier__variant" data-variant="founder" hidden>
@@ -391,7 +405,7 @@
         <h3 class="tier__name">Both apps</h3>
         <div class="tier__variant" data-variant="standard">
           <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="bundle">19</span></p>
-          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__meta">One-time · <span data-when="preorder">pre-order</span><span data-when="released">early access</span></p>
           <p class="tier__rise">Goes to <span data-future="bundle">$59</span> at 1.0</p>
           <ul class="tier__list">
           <li>Everything in both apps</li>
@@ -399,7 +413,7 @@
           <li>A licence key for each app</li>
             <li>Every update through 1.x</li>
           </ul>
-          <a class="btn btn--primary btn--block" data-buy="bundle">Pre-order the bundle</a>
+          <a class="btn btn--primary btn--block" data-buy="bundle"><span data-when="preorder">Pre-order</span><span data-when="released">Get</span> the bundle</a>
         </div>
 
         <div class="tier__variant" data-variant="founder" hidden>
@@ -420,7 +434,7 @@
         <h3 class="tier__name">Throughline Balance</h3>
         <div class="tier__variant" data-variant="standard">
           <p class="tier__price"><span class="tier__cur">$</span><span data-price-num="balance">19</span></p>
-          <p class="tier__meta">One-time · pre-order</p>
+          <p class="tier__meta">One-time · <span data-when="preorder">pre-order</span><span data-when="released">early access</span></p>
           <p class="tier__rise">Goes to <span data-future="balance">$39</span> at 1.0</p>
           <ul class="tier__list">
           <li>Formula &amp; points curves</li>
@@ -428,7 +442,7 @@
           <li>Multi-stat comparisons</li>
             <li>Every update through 1.x</li>
           </ul>
-          <a class="btn btn--ghost btn--block" data-buy="balance">Pre-order Balance</a>
+          <a class="btn btn--ghost btn--block" data-buy="balance"><span data-when="preorder">Pre-order</span><span data-when="released">Get</span> Balance</a>
         </div>
 
         <div class="tier__variant" data-variant="founder" hidden>
@@ -446,10 +460,14 @@
       </div>
     </div>
 
-    <p class="guarantee">
+    <p class="guarantee" data-when="preorder">
       <strong>Refund any time before delivery, plus 30 days after.</strong> Reply to your receipt
       and you get your money back — no form, no interrogation. You're paying ahead of the work, so
       the exit stays open the entire time you're waiting.
+    </p>
+    <p class="guarantee" data-when="released">
+      <strong>30-day refund.</strong> Reply to your receipt and you get your money back — no form,
+      no interrogation. Buying unfinished software shouldn't be a gamble.
     </p>
   </div>
 </section>
@@ -461,13 +479,19 @@
     <h2 class="section__title">Questions worth answering</h2>
 
     <div class="faq">
-      <details open>
+      <details open data-when="preorder">
         <summary>When do I actually get the software?</summary>
         <p>Currently estimated <span data-delivery>Q1 2027</span>. That's an estimate from a
            solo developer, not a contract — if it moves, you'll get an email explaining why, and
            you can take a full refund on the spot. I'd rather tell you late than quietly miss it.</p>
       </details>
-      <details>
+      <details open data-when="released">
+        <summary>What do I get right now, today?</summary>
+        <p>An email with your licence key and a download link for the macOS build, within a
+           minute of buying. It's a universal build, so it runs on Apple Silicon and Intel.
+           Windows isn't ready — see below — and your licence covers it free whenever it is.</p>
+      </details>
+      <details data-when="preorder">
         <summary>What do I get right now, today?</summary>
         <p>An emailed order confirmation with your licence key and your locked founding price.
            No download — there isn't one yet. When the builds are ready, the download link goes
@@ -534,8 +558,10 @@
 <section class="cta">
   <div class="wrap wrap--narrow cta__inner">
     <h2>Find the sag before your players do</h2>
-    <p>Pre-order at the founding price. Delivery estimated <span data-delivery>Q1 2027</span>,
+    <p data-when="preorder">Pre-order at the founding price. Delivery estimated <span data-delivery>Q1 2027</span>,
        refundable in full at any point before then.</p>
+    <p data-when="released">Available now for macOS, at the early-access price. 30-day refund,
+       and every update through 1.x included.</p>
     <a class="btn btn--primary btn--lg" href="#pricing">See pricing</a>
 
     <form class="signup" data-signup hidden>
