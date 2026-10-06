@@ -214,10 +214,15 @@ async function sendEmail(env, to, product, keys, tier) {
   const preorder = String(env.PREORDER) === "true";
   const eta = env.DELIVERY_ESTIMATE || "a date I'll confirm shortly";
 
+  // In released mode each key links straight to its own build, so the buyer
+  // never has to copy a key anywhere. Pre-order keys are records, not links.
   const rows = keys.map(({ app, key }) => `
     <p style="margin:18px 0 4px;color:#555">${CATALOGUE[app].label}</p>
     <p style="font:600 18px ui-monospace,Menlo,monospace;background:#f4f4f7;
-              padding:14px 18px;border-radius:8px;display:inline-block;margin:0">${key}</p>`).join("");
+              padding:14px 18px;border-radius:8px;display:inline-block;margin:0">${key}</p>` +
+    (preorder ? "" : `
+    <p style="margin:8px 0 0"><a href="https://throughlinetools.com/download?key=${encodeURIComponent(key)}"
+       >Download ${CATALOGUE[app].label} for macOS</a></p>`)).join("");
 
   // Two different emails. A pre-order receipt that links a download would be a
   // broken promise in the buyer's inbox, and "where is my download" is the most
@@ -238,7 +243,10 @@ async function sendEmail(env, to, product, keys, tier) {
        <p>Your licence covers <strong>${tier.updates}</strong>.</p>
        <p>Your licence key${keys.length > 1 ? "s" : ""}:</p>
        ${rows}
-       <p style="margin-top:24px"><a href="https://throughlinetools.com/download">Download your apps</a></p>
+       <p style="margin-top:24px">These builds aren't code-signed yet, so macOS will warn you the
+          first time — right-click the app and choose <strong>Open</strong>. Once only.</p>
+       <p>Lost this email later? <a href="https://throughlinetools.com/download">throughlinetools.com/download</a>
+          takes your licence key.</p>
        <p>Any trouble at all, just reply to this email. 30-day refunds, no questions.</p>`;
 
   const res = await fetch("https://api.resend.com/emails", {

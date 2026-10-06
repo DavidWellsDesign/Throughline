@@ -61,6 +61,63 @@ file, so the sample project is inlined at the top of `scripts/shot-balance.mjs` 
 Re-run these whenever the app UI changes, so the sales page never shows a version that no longer
 exists.
 
+## Publishing a build for download
+
+`/api/download?key=<licence>` is the gate. The licence key is the credential — unguessable, already
+in the buyer's inbox, and tied to exactly one app, so a bundle buyer's two keys fetch two different
+builds with no extra state. The released-mode receipt deep-links each key, so nobody has to paste
+anything.
+
+### One-time setup
+
+R2 has to be switched on in the Cloudflare dashboard first (R2 → it asks you to accept the terms).
+Wrangler can't do it. Then:
+
+```bash
+npx wrangler r2 bucket create throughline-releases
+```
+
+Add the binding to [`wrangler.jsonc`](wrangler.jsonc), in **both** `env` blocks alongside the KV one:
+
+```jsonc
+"r2_buckets": [
+  { "binding": "RELEASES", "bucket_name": "throughline-releases" }
+]
+```
+
+### Each release
+
+Build, upload, then point the manifest at it:
+
+```bash
+npm run tauri:build --prefix ../../GameProgressionApp
+```
+
+```bash
+npx wrangler r2 object put "throughline-releases/progression/throughline-progression-0.1.0.dmg" \
+  --file "../../GameProgressionApp/src-tauri/target/universal-apple-darwin/release/bundle/dmg/Throughline Progression_0.1.0_universal.dmg" \
+  --remote
+```
+
+```bash
+npx wrangler kv key put --namespace-id 7e3241f188384d40aeb88778926f0a92 --remote "release:progression" \
+  '{"version":"0.1.0","object":"progression/throughline-progression-0.1.0.dmg","filename":"Throughline Progression 0.1.0.dmg"}'
+```
+
+Repeat for `balance`. The manifest is KV, not code, so shipping a new build is an upload plus a
+one-line write — no redeploy. Upload **before** updating the manifest: a manifest pointing at a
+missing object returns 503, so that order never serves a broken download.
+
+Use `--remote` on both. Without it wrangler writes to local simulation state and the live site
+sees nothing.
+
+### What the endpoint refuses
+
+Unknown and malformed keys both get the same unhelpful answer, since there is nothing to learn
+from the difference. Refunded licences (`revoked: true` on the record) get 403 — nothing sets that
+flag yet, but a `charge.refunded` listener would work without touching the endpoint. Downloads are
+counted on the licence record so key-sharing is visible without blocking anyone.
+
 ## Switching from pre-order to released
 
 Two values, and they must change together:

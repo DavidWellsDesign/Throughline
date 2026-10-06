@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Download — Throughline</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .dl{ min-height:100vh; display:grid; place-items:center; padding:48px 0; }
+  .dl__inner{ text-align:center; }
+  .dl h1{ font-size:clamp(1.8rem,4vw,2.5rem); }
+  .dl__lead{ margin:18px auto 0; color:var(--text-dim); max-width:48ch; }
+  .dl__form{ margin:34px auto 0; display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
+  .dl__form input{
+    flex:1 1 320px; max-width:380px; text-align:center;
+    background:var(--surface); border:1px solid var(--line-hi); color:var(--text);
+    border-radius:10px; padding:.9em 1em; font-family:var(--mono); font-size:1rem;
+    letter-spacing:.06em; text-transform:uppercase;
+  }
+  .dl__form input::placeholder{ color:var(--text-faint); letter-spacing:.04em; }
+  .dl__msg{
+    margin:22px auto 0; max-width:52ch; font-size:.95rem; padding:14px 18px;
+    border-radius:var(--radius); display:none; text-align:left;
+  }
+  .dl__msg.is-shown{ display:block; }
+  .dl__msg--err{ background:rgba(255,105,105,.08); border:1px solid rgba(255,105,105,.3); color:#ffb4b4; }
+  .dl__msg--ok{ background:rgba(53,214,200,.08); border:1px solid rgba(53,214,200,.3); color:var(--accent-2); }
+  .dl__note{ margin-top:34px; color:var(--text-faint); font-size:.88rem; max-width:50ch; margin-inline:auto; }
+  .dl__note a{ color:var(--accent-soft); }
+</style>
+</head>
+<body>
+<main class="dl">
+  <div class="wrap wrap--narrow dl__inner">
+    <a class="legal__back" href="/">← Throughline</a>
+    <h1>Download your apps</h1>
+    <p class="dl__lead">
+      Paste the licence key from your receipt. Each key downloads the app it was issued for —
+      if you bought the bundle you have two, one for each.
+    </p>
+
+    <form class="dl__form" data-dl-form>
+      <label class="sr-only" for="key">Licence key</label>
+      <input id="key" name="key" placeholder="GP-XXXX-XXXX-XXXX" autocomplete="off"
+             spellcheck="false" required>
+      <button class="btn btn--primary" type="submit">Download</button>
+    </form>
+
+    <p class="dl__msg" data-dl-msg role="status" aria-live="polite"></p>
+
+    <p class="dl__note">
+      These builds aren't code-signed yet, so macOS will warn you the first time. Right-click the
+      app and choose <strong>Open</strong> — once only.
+      <br><br>
+      Lost your key, or something not working?
+      <a href="mailto:hello@throughlinetools.com">Email me</a> from the address you bought with
+      and I'll resend it.
+    </p>
+  </div>
+</main>
+
+<script>
+(function () {
+  "use strict";
+  var form = document.querySelector("[data-dl-form]");
+  var input = form.querySelector("input");
+  var msg = document.querySelector("[data-dl-msg]");
+
+  function say(text, kind) {
+    msg.textContent = text;
+    msg.className = "dl__msg is-shown dl__msg--" + kind;
+  }
+
+  // Deep link from the receipt email: ?key=... fills the field and goes.
+  var fromUrl = new URLSearchParams(location.search).get("key");
+  if (fromUrl) { input.value = fromUrl; submit(); }
+
+  form.addEventListener("submit", function (e) { e.preventDefault(); submit(); });
+
+  async function submit() {
+    var key = input.value.trim();
+    if (!key) return;
+    say("Checking your licence…", "ok");
+
+    try {
+      // HEAD first so a bad key produces a readable message instead of the
+      // browser navigating away to a plain-text error page.
+      var probe = await fetch("/api/download?key=" + encodeURIComponent(key), { method: "HEAD" });
+      if (!probe.ok) {
+        var detail = await fetch("/api/download?key=" + encodeURIComponent(key));
+        say(await detail.text(), "err");
+        return;
+      }
+      say("Licence found — your download is starting.", "ok");
+      location.href = "/api/download?key=" + encodeURIComponent(key);
+    } catch (err) {
+      say("Couldn't reach the server. Check your connection and try again.", "err");
+    }
+  }
+})();
+</script>
+</body>
+</html>

@@ -217,6 +217,28 @@ await check("missing DELIVERY_ESTIMATE degrades to a phrase, not 'undefined'", a
   return !/undefined/.test(h.sent[0].body.html);
 });
 
+console.log("\nDownload links in the receipt");
+
+await check("released receipts deep-link each key to its own build", async () => {
+  const h = makeEnv(); h.install();
+  h.env.PREORDER = "false";
+  const body = sessionEvent({ id: "evt_dl", product: "bundle", tier: "founder" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  const html = h.sent[0].body.html;
+  const links = [...html.matchAll(/\/download\?key=([A-Z0-9%-]+)/g)].map(m => decodeURIComponent(m[1]));
+  // One link per key, each matching a key actually printed in the same email.
+  return links.length === 2 && links.every(k => html.includes(k)) &&
+         links.some(k => k.startsWith("GP-")) && links.some(k => k.startsWith("GB-"));
+});
+
+await check("pre-order receipts carry no download link at all", async () => {
+  const h = makeEnv(); h.install();
+  h.env.PREORDER = "true";
+  const body = sessionEvent({ id: "evt_nodl", product: "bundle" });
+  await handleStripeWebhook(post(body, sign(body)), h.env);
+  return !/\/download/.test(h.sent[0].body.html);
+});
+
 console.log("\nTiers");
 
 await check("no tier in metadata defaults to standard (the pre-founder links)", async () => {

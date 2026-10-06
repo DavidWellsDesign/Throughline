@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "python3 -m http.server 8000 --directory public",
-    "test": "node scripts/test-webhook.mjs",
+    "test": "node scripts/test-webhook.mjs && node scripts/test-download.mjs",
     "shots": "node scripts/shot-progression.mjs && node scripts/shot-balance.mjs"
   },
   "devDependencies": {
